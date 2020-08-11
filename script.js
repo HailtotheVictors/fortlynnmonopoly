@@ -6,6 +6,7 @@ var inLava = false;
 var turnsStuck = 0;
 var onMainTrack = true;
 var roads = [];
+var btnAdd, track;
 roads[0] = {id:9,pos:22};
 roads[1] = {id:24,pos:34};
 roads[2] = {id:312,pos:10};
