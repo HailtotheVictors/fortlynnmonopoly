@@ -7,7 +7,15 @@
     <script src="script.js"></script>
     <script src="spaces.js"></script>
     <script src="stocks.js"></script>
-    <script src="register.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/FortLynnMonopoly/worker.js').then(function(registration) {
+          console.log('Service worker registered successfully', registration);
+        }).catch(function(err) {
+          console.log('Service worker registration failed: ', err);
+        });
+      };
+    </script>
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
