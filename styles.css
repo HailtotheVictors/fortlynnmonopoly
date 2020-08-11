@@ -115,7 +115,7 @@ body {
   font-size: 40px;
 }
 .rollCard {
-  background-image: url('lines.gif');
+  background-image: linear-gradient(330deg,indigo,royalblue,green);
   background-size: cover;
   background-position: center;
 }
