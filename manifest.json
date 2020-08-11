@@ -3,7 +3,7 @@
   "short_name": "FL Monopoly",
   "description": "The app for the Fort Lynn Monopoly game.",
   "lang": "en",
-  "start_url": "/index.html",
+  "start_url": "/FortLynnMonopoly/index.html",
   "scope": "/FortLynnMonopoly",
   "display": "standalone",
   "theme_color": "#000080",
