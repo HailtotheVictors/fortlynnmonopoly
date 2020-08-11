@@ -13,9 +13,6 @@ roads[2] = {id:312,pos:10};
 window.onload = function() {
   makeAllRows(); //run first
   btnAdd = document.getElementById("installBtn");
-  console.log(btnAdd);
-  addPromptListener();
-  addInstallBtnListener();
   track = route.slice(0);
 }
 
