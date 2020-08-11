@@ -13,6 +13,8 @@ window.onload = function() {
   makeAllRows(); //run first
   installBtn = document.getElementById("installBtn");
   console.log(installBtn);
+  addPromptListener();
+  addInstallBtnListener();
   track = route.slice(0);
 }
 
