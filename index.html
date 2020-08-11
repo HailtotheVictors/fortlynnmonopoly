@@ -15,6 +15,7 @@
           console.log('Service worker registration failed: ', err);
         });
       };
+      window.addEventListener('beforeinstallprompt', function() {console.log('ready')} );
     </script>
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
