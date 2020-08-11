@@ -6,6 +6,7 @@
   "start_url": "/fortlynnmonopoly/index.html",
   "scope": "/fortlynnmonopoly",
   "display": "standalone",
+  "orientation": "portrait",
   "theme_color": "#000080",
   "background_color": "#dddddd",
   "icons": [
