@@ -6,13 +6,6 @@ const PRECACHE_URLS = [
   'FortLynnMonopoly/index.html',
   'FortLynnMonopoly/styles.html',
   'FortLynnMonopoly/script.html',
-  'FortLynnMonopoly/favicon.png',
-  'FortLynnMonopoly/Kabel-Heavy.woff',
-  'FortLynnMonopoly/Kabel-Heavy.woff2',
-  'FortLynnMonopoly/line.gif',
-  'FortLynnMonopoly/logo.png',
-  'FortLynnMonopoly/spaces.js',
-  'FortLynnMonopoly/stocks.js'
 ];
 
 // The install handler takes care of precaching the resources we always need.
