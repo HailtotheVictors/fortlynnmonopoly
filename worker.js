@@ -3,9 +3,9 @@ const RUNTIME = 'runtime';
 
 // A list of local resources we always want to be cached.
 const PRECACHE_URLS = [
-  '/FortLynnMonopoly/index.html',
-  '/FortLynnMonopoly/styles.html',
-  '/FortLynnMonopoly/script.html',
+  '/fortlynnmonopoly/index.html',
+  '/fortlynnmonopoly/styles.css',
+  '/fortlynnmonopoly/script.js',
 ];
 
 // The install handler takes care of precaching the resources we always need.
