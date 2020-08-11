@@ -5,6 +5,7 @@
   "lang": "en",
   "start_url": "/FortLynnMonopoly/index.html",
   "scope": "/FortLynnMonopoly",
+  "splash_pages": null,
   "display": "standalone",
   "theme_color": "#000080",
   "background_color": "#dddddd",
