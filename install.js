@@ -10,11 +10,11 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 function showInstallPromotion() {
-  document.getElementById("installButton").style.display = "block";
+  installBtn.style.display = "block";
 }
 
 function addInstallBtnListener(){
-  document.getElementById("installBtn").addEventListener('click', (e) => {
+  installBtn.addEventListener('click', (e) => {
     // Hide the app provided install promotion
     hideMyInstallPromotion();
     // Show the install prompt
@@ -31,7 +31,7 @@ function addInstallBtnListener(){
 }
 
 function hideInstallPromotion() {
-  document.getElementById("installButton").style.display = "none";
+  installBtn.style.display = "none";
 }
 
 window.addEventListener('appinstalled', (evt) => {
