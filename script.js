@@ -53,6 +53,9 @@ function makePropRow(prop) {
   newPath.setAttribute("d","M7,10L12,15L17,10H7Z");
   newSVG.appendChild(newPath);
   newRow.appendChild(newSVG);
+  var newTitle = document.createElementNS("http://www.w3.org/2000/svg", "title");
+  newTitle.innerHTML = "Expand Property " + prop.title;
+  newSVG.append(newTitle);
   //final appendage
   document.getElementsByClassName("card")[0].append(newRow);
 }
