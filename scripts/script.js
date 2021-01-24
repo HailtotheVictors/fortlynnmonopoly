@@ -3,7 +3,6 @@ window.onload = function() {
   props = props.concat(mainProperties);
   if (getCookie('expansions')) {
     var u = JSON.parse(getCookie('expansions'));
-    console.log('u',u);
     initGame(u);
   }
   if (getCookie('init')) {
@@ -111,18 +110,16 @@ function initGame(a) {
   } else {
     var u = [0,0,0];
     for (let i = 0, e = c[0]; i < c.length; i++, e = c[i]) {
-      console.log(e.checked);
       if (e.checked) {
         u[i] = 1;
       }
     }
   }
-  for (let i = 0, p = x[0]; i < x.length; i++, p = x[1]) {
+  for (let i = 0, p = x[0]; i < x.length; i++, p = x[i]) {
     if (u[i] == 1) {
-      props.concat(p);
+      props = props.concat(p);
     }
   }
-  console.log('2u',u);
   expansions = u;
   document.cookie = `expansions=${JSON.stringify(u)}`;
   document.getElementById('initGame').style.display = 'none';
