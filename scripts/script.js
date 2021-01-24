@@ -9,6 +9,17 @@ window.onload = function() {
   if (getCookie('init')) {
     initBal = getCookie('init');
   }
+  if (getCookie('players')) {
+    var list = JSON.parse(getCookie('players'));
+    for (let player of list) {
+      makePlayerRow(player);
+    }
+  }
+  if (getCookie('launched') == 'true') {
+    document.cookie = 'launched=true';
+    launched = 'true';
+    document.getElementById('gameBtn').style.color = 'red';
+  }
 }
 
 window.onresize = function() {
@@ -21,6 +32,7 @@ var houses = [];
 var expansions = [];
 var initBal = 0;
 var playerLim = 8;
+var launched = 'false';
 houses[0] = 'M11,10H13V16H11V10M22,12H19V20H5V12H2L12,3L22,12M15,10A2,2 0 0,0 13,8H11A2,2 0 0,0 9,10V16A2,2 0 0,0 11,18H13A2,2 0 0,0 15,16V10Z';
 houses[1] = 'M12,3L2,12H5V20H19V12H22L12,3M10,8H14V18H12V10H10V8Z';
 houses[2] = 'M12,3L2,12H5V20H19V12H22L12,3M9,8H13A2,2 0 0,1 15,10V12A2,2 0 0,1 13,14H11V16H15V18H9V14A2,2 0 0,1 11,12H13V10H9V8Z';
@@ -195,6 +207,9 @@ function startGame() {
   }
   update();
   autoUpdate();
+  launched = 'true';
+  document.cookie = 'launched=true';
+  document.getElementById('gameBtn').style.color = 'red';
   for (let player of players) {
     player.updateBal(init);
   }
