@@ -110,11 +110,15 @@ function initGame(a) {
     var u = a;
   } else {
     var u = [0,0,0];
-    for (let i = 0, p = x[0], e = c[0]; i < c.length; i++, p = x[i], e = c[i]) {
+    for (let i = 0, e = c[0]; i < c.length; i++, e = c[i]) {
       if (e.checked) {
-        props = props.concat(p);
         u[i] = 1;
       }
+    }
+  }
+  for (let i = 0, p = x[0]; i < x.length; i++, p = x[1]) {
+    if (u[i] == 1) {
+      props.concat(p);
     }
   }
   console.log('2u',u);
