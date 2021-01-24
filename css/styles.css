@@ -12,10 +12,16 @@ button:focus, input:focus {
 }
 @font-face {
   font-family: 'Kabel';
-  src: url('css/kabel.ttf') format('ttf'),
-       url('css/Kabel-Heavy.woff') format('woff'),
-       url('css/Kabel-Heavy.woff2') format('woff2');
-  font-weight: 900;
+  src: url('kabel.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Kabel';
+  src: url('Kabel-Heavy.woff') format('woff'),
+       url('Kabel-Heavy.woff2') format('woff2');
+  font-weight: bold;
   font-style: normal;
   font-display: swap;
 }
@@ -143,7 +149,7 @@ button:focus, input:focus {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
-#launchBtn, #gameBtn {
+#launchBtn, #gameBtn, #resetBtn {
   font-family: 'Roboto', sans-serif;
   padding: 10px 20px;
   color: white;
@@ -152,13 +158,14 @@ button:focus, input:focus {
   border: none;
   font-size: 22px;
 }
-#launchBtn:hover, #gameBtn:hover {
+#launchBtn:hover, #gameBtn:hover, #resetBtn:hover {
   background-color: #666;
 }
-#addBtn {
+#addBtn, #nfcBtn {
   margin: 12px;
   height: 30px;
   width: 30px;
+  fill: white;
 }
 #playerName {
   padding: 5px;
@@ -217,4 +224,64 @@ button:focus, input:focus {
   font-family: 'Kabel', sans-serif;
   font-size: 14px;
   text-align: center;
+}
+.playerRow {
+  height: auto;
+  width: 100%;
+  border-bottom: 1px solid #444;
+}
+.playerRow:last-of-type {
+  border-bottom: none;
+}
+.playerTop {
+  height: 50px;
+  width: 100%;
+  display: flex;
+}
+.playerName, .playerBal {
+  height: 50px;
+  line-height: 50px;
+  font-family: 'Kabel', sans-serif;
+  font-size: 30px;
+  width: calc(100% - 10px);
+  padding-left: 10px;
+}
+.playerBal {
+  color: gold;
+  text-align: center;
+}
+.playerBtn {
+  height: 40px;
+  width: 40px;
+  margin: 5px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  fill: white;
+}
+.playerBtn:hover {
+  background-color: #555;
+}
+.playerGrid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 5px;
+  grid-gap: 5px;
+}
+.playerAsset {
+  height: 30px;
+  display: flex;
+}
+.playerAssetColor {
+  height: 30px;
+  width: 5px;
+  flex-shrink: 0;
+}
+.playerAssetAbbr {
+  height: 30px;
+  line-height: 30px;
+  width: 100%;
+  margin-left: 5px;
+  font-family: 'Kabel', sans-serif;
+  color: white;
+  font-size: 20px;
 }
