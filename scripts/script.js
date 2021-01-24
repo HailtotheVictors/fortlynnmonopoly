@@ -111,6 +111,7 @@ function initGame(a) {
   } else {
     var u = [0,0,0];
     for (let i = 0, e = c[0]; i < c.length; i++, e = c[i]) {
+      console.log(e.checked);
       if (e.checked) {
         u[i] = 1;
       }
