@@ -11,11 +11,21 @@ window.onload = function() {
     }
     initGame();
   }
+  if (getCookie('init')) {
+    initBal = getCookie('init');
+  }
+}
+
+window.onresize = function() {
+  document.getElementById('container').style.height = `${window.innerHeight - 100}px`;
 }
 
 var players = [];
 var props = [];
 var houses = [];
+var expansions = [];
+var initBal = 0;
+var playerLim = 8;
 houses[0] = 'M11,10H13V16H11V10M22,12H19V20H5V12H2L12,3L22,12M15,10A2,2 0 0,0 13,8H11A2,2 0 0,0 9,10V16A2,2 0 0,0 11,18H13A2,2 0 0,0 15,16V10Z';
 houses[1] = 'M12,3L2,12H5V20H19V12H22L12,3M10,8H14V18H12V10H10V8Z';
 houses[2] = 'M12,3L2,12H5V20H19V12H22L12,3M9,8H13A2,2 0 0,1 15,10V12A2,2 0 0,1 13,14H11V16H15V18H9V14A2,2 0 0,1 11,12H13V10H9V8Z';
@@ -24,11 +34,57 @@ houses[4] = 'M12,3L2,12H5V20H19V12H22L12,3M11,8H15V10H11V16H13V12H15V16C15,17.11
 houses[5] = 'M12,3L2,12H5V20H19V12H22L12,3M9,8H11V16H15V18H9V8Z';
 
 class Player {
-  constructor(name,card) {
+  constructor(name,card,color) {
     this.bal = 1e6;
     this.name = name;
-    this.props = [];
+    this.props = ['JQG','SERE','WLST'];
+    this.stocks = [];
     this.card = card;
+    this.color = color;
+    makePlayerRow(this);
+  }
+}
+Player.prototype.updateBal = function(bal) {
+  if (!bal) {
+    return;
+  }
+  this.bal = bal;
+  for (let row of document.getElementsByClassName('playerRow')) {
+    if (row.getAttribute('data-card') == this.card) {
+      row.children[1].textContent = renderPrice(bal);
+      break;
+    }
+  }
+}
+Player.prototype.getIndex = function() {
+  for (let i = 0, p = players[0]; i < players.length; i++, p = players[i]) {
+    if (p.card == this.card) {
+      return i;
+    }
+  }
+}
+
+function makePlayerRow(player) {
+  var newRow = buildElem('DIV','playerRow',undefined,document.getElementsByClassName('page')[2]);
+  newRow.setAttribute('data-card',player.card);
+  var newTop = buildElem('DIV','playerTop',undefined,newRow);
+  var newName = buildElem('DIV','playerName',player.name,newTop);
+  newName.style.color = player.color;
+  var dg = 'M3,6H21V18H3V6M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M7,8A2,2 0 0,1 5,10V14A2,2 0 0,1 7,16H17A2,2 0 0,1 19,14V10A2,2 0 0,1 17,8H7Z';
+  var newGo = buildSVG(dg,'playerBtn','Passed $50K Go',newTop,true);
+  var dm = 'M5,6H23V18H5V6M14,9A3,3 0 0,1 17,12A3,3 0 0,1 14,15A3,3 0 0,1 11,12A3,3 0 0,1 14,9M9,8A2,2 0 0,1 7,10V14A2,2 0 0,1 9,16H19A2,2 0 0,1 21,14V10A2,2 0 0,1 19,8H9M1,10H3V20H19V22H1V10Z';
+  var newMax = buildSVG(dm,'playerBtn','Passed $100K Go',newTop,true);
+  var dc = 'M15 4A8 8 0 1 1 7 12A8 8 0 0 1 15 4M3 12A6 6 0 0 0 7 17.65V19.74A8 8 0 0 1 7 4.26V6.35A6 6 0 0 0 3 12Z';
+  var newCoin = buildSVG(dc,'playerBtn','Collect Dividends',newTop,true);
+  buildElem('DIV','playerBal',renderPrice(player.bal),newRow);
+  var newBot = buildElem('DIV','playerGrid',undefined,newRow);
+  for (let abbr of player.props) {
+    let prop = getPropFromAbbr(abbr);
+    console.log(prop,abbr);
+    let newProp = buildElem('DIV','playerAsset',undefined,newBot);
+    let newColor = buildElem('DIV','playerAssetColor',undefined,newProp);
+    newColor.style.backgroundColor = prop.color;
+    buildElem('DIV','playerAssetAbbr',abbr,newProp);
   }
 }
 
@@ -42,6 +98,7 @@ function initGame() {
       u[i] = 1;
     }
   }
+  expansions = u;
   document.cookie = `expansions=${JSON.stringify(u)}`;
   document.getElementById('initGame').style.display = 'none';
   document.getElementById('initPlayers').style.display = 'block';
@@ -104,6 +161,51 @@ function buildPropRow(prop) {
       newCell.textContent = cell;
     }
   }
+}
+
+function scanInitCard() {
+  var player = new Player(document.getElementById('playerName').value,secStr(),'limegreen');
+  players.push(player);
+  document.getElementById('playerName').value = '';
+}
+
+function startGame() {
+  if (players.length < 3 || players.length > playerLim) {
+    return;
+  }
+  var supply = 5 * 1e6;
+  var cap = [2 * 1e6,3 * 1e6,5 * 1e6];
+  for (let i = 0, a = cap[0]; i < expansions.length; i++, a = cap[i]) {
+    if (expansions[i] == 1) {
+      supply += a;
+    }
+  }
+  document.cookie = `init=${supply}`;
+  var init = ceilToPlace(supply / players.length,6);
+  for (let player of players) {
+    player.bal = init;
+  }
+  update();
+  autoUpdate();
+  for (let player of players) {
+    player.updateBal(init);
+  }
+}
+
+function autoUpdate() {
+  setInterval(function() {
+    update();
+  }, 60 * 1000);
+}
+
+function update() {
+  document.cookie = `players=${JSON.stringify(players)}`;
+}
+
+function reset() {
+  document.cookie = 'expansions=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  document.cookie = 'players=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  document.cookie = 'init=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
 
 //resources
@@ -193,4 +295,12 @@ function secStr() {
     str += Math.floor(Math.random() * 36).toString(36);
   }
   return str;
+}
+
+function getPropFromAbbr(abbr) {
+  for (let prop of props) {
+    if (prop.abbr == abbr) {
+      return prop;
+    }
+  }
 }
