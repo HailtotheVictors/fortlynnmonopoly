@@ -87,18 +87,6 @@ button:focus, input:focus {
 .page:nth-of-type(7) {
   border-top-color: #ccc;
 }
-.page::-webkit-scrollbar {
-  width: 8px;
-}
-.page::-webkit-scrollbar-track {
-  background: #444;
-}
-.page::-webkit-scrollbar-thumb {
-  background: #666;
-}
-.page::-webkit-scrollbar-thumb:hover {
-  background: #777;
-}
 .checkCont {
   display: block;
   position: relative;
@@ -184,25 +172,25 @@ button:focus, input:focus {
 }
 .propTop {
   display: flex;
-  height: 30px;
+  height: 35px;
 }
 .propColor {
-  height: 30px;
+  height: 35px;
   width: 5px;
   flex-shrink: 0;
 }
 .propName {
-  height: 30px;
-  line-height: 30px;
+  height: 35px;
+  line-height: 35px;
   font-family: 'Kabel', sans-serif;
   color: white;
-  font-size: 20px;
+  font-size: 25px;
   padding: 0px 5px;
   width: 100%;
 }
 .propBtn {
-  height: 26px;
-  width: 26px;
+  height: 31px;
+  width: 31px;
   margin: 2px;
   fill: white;
   border-radius: 5px;
