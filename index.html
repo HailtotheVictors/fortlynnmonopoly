@@ -30,9 +30,14 @@
           </label>
           <button id="launchBtn" onclick="initGame()">Launch</button>
         </div>
-        <div id="initPlayers" style="display: none;"></div>
+        <div id="initPlayers" style="display: none;">
+          <input type="text" id="playerName"><br>
+          <svg id="addBtn" viewBox="0 0 24 24">
+            <path fill="white" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z" />
+          </svg><br>
+          <button id="gameBtn">Launch Game</button>
+        </div>
       </div>
-      <div class="page"></div>
       <div class="page"></div>
       <div class="page"></div>
       <div class="page"></div>
@@ -41,8 +46,7 @@
     </div>
     <div id="dock">
       <svg role="button" onclick="goToPage(0)" viewBox="0 0 24 24" class="viewing">
-        <title>Init</title>
-        <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+        <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z" />
       </svg>
       <svg role="button" onclick="goToPage(1)" viewBox="0 0 24 24">
         <title>Transfer</title>
@@ -57,14 +61,10 @@
         <path d="M17,18C15.89,18 15,18.89 15,20A2,2 0 0,0 17,22A2,2 0 0,0 19,20C19,18.89 18.1,18 17,18M1,2V4H3L6.6,11.59L5.24,14.04C5.09,14.32 5,14.65 5,15A2,2 0 0,0 7,17H19V15H7.42A0.25,0.25 0 0,1 7.17,14.75C7.17,14.7 7.18,14.66 7.2,14.63L8.1,13H15.55C16.3,13 16.96,12.58 17.3,11.97L20.88,5.5C20.95,5.34 21,5.17 21,5A1,1 0 0,0 20,4H5.21L4.27,2M7,18C5.89,18 5,18.89 5,20A2,2 0 0,0 7,22A2,2 0 0,0 9,20C9,18.89 8.1,18 7,18Z"/>
       </svg>
       <svg role="button" onclick="goToPage(4)" viewBox="0 0 24 24">
-        <title>Charge</title>
-        <path d="M3,6H21V18H3V6M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M7,8A2,2 0 0,1 5,10V14A2,2 0 0,1 7,16H17A2,2 0 0,1 19,14V10A2,2 0 0,1 17,8H7Z"/>
-      </svg>
-      <svg role="button" onclick="goToPage(5)" viewBox="0 0 24 24">
         <title>Properties</title>
         <path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/>
       </svg>
-      <svg role="button" onclick="goToPage(6)" viewBox="0 0 24 24">
+      <svg role="button" onclick="goToPage(5)" viewBox="0 0 24 24">
         <title>Stocks</title>
         <path d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,16.59L3.41,18L9.41,12L13.41,16L19.71,9.71L22,12V6H16Z"/>
       </svg>
