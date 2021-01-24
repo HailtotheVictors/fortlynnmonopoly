@@ -38,7 +38,7 @@ class Player {
     this.bal = 1e6;
     this.name = name;
     this.props = ['JQG','SERE','WLST'];
-    this.stocks = [];
+    this.stocks = ['QAR'];
     this.card = card;
     this.color = color;
     makePlayerRow(this);
@@ -80,10 +80,18 @@ function makePlayerRow(player) {
   var newBot = buildElem('DIV','playerGrid',undefined,newRow);
   for (let abbr of player.props) {
     let prop = getPropFromAbbr(abbr);
-    console.log(prop,abbr);
     let newProp = buildElem('DIV','playerAsset',undefined,newBot);
     let newColor = buildElem('DIV','playerAssetColor',undefined,newProp);
     newColor.style.backgroundColor = prop.color;
+    buildElem('DIV','playerAssetAbbr',abbr,newProp);
+  }
+  var secBot = buildElem('DIV','playerGrid',undefined,newRow);
+  secBot.style.borderTop = '1px solid #333';
+  for (let abbr of player.stocks) {
+    let stock = getStockFromAbbr(abbr);
+    let newProp = buildElem('DIV','playerAsset',undefined,secBot);
+    let newColor = buildElem('DIV','playerAssetColor',undefined,newProp);
+    newColor.style.backgroundColor = stock.accent;
     buildElem('DIV','playerAssetAbbr',abbr,newProp);
   }
 }
@@ -301,6 +309,14 @@ function getPropFromAbbr(abbr) {
   for (let prop of props) {
     if (prop.abbr == abbr) {
       return prop;
+    }
+  }
+}
+
+function getStockFromAbbr(abbr) {
+  for (let stock of stocks) {
+    if (stock.img == abbr.toLowerCase()) {
+      return stock;
     }
   }
 }
