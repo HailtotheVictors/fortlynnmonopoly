@@ -12,7 +12,9 @@ button:focus, input:focus {
 }
 @font-face {
   font-family: 'Kabel';
-  src: url('css/Kabel-Heavy.ttf') format('ttf');
+  src: url('css/kabel.ttf') format('ttf'),
+       url('css/Kabel-Heavy.woff') format('woff'),
+       url('css/Kabel-Heavy.woff2') format('woff2');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
