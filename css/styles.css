@@ -193,7 +193,7 @@ button:focus, input:focus {
   line-height: 35px;
   font-family: 'Kabel', sans-serif;
   color: white;
-  font-size: 25px;
+  font-size: 24px;
   padding: 0px 5px;
   width: 100%;
   overflow: hidden;
@@ -228,7 +228,7 @@ button:focus, input:focus {
 .playerRow {
   height: auto;
   width: 100%;
-  border-bottom: 1px solid #444;
+  border-bottom: 1px solid #666;
 }
 .playerRow:last-of-type {
   border-bottom: none;
