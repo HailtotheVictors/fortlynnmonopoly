@@ -10,6 +10,7 @@ window.onload = function() {
   }
   if (getCookie('players')) {
     var list = JSON.parse(getCookie('players'));
+    console.log(list);
     for (let player of list) {
       makePlayerRow(player);
     }
@@ -100,6 +101,7 @@ function makePlayerRow(player) {
     newColor.style.backgroundColor = stock.accent;
     buildElem('DIV','playerAssetAbbr',abbr,newProp);
   }
+  update();
 }
 
 function initGame(a) {
