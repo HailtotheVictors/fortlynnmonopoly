@@ -3,6 +3,7 @@ window.onload = function() {
   props = props.concat(mainProperties);
   if (getCookie('expansions')) {
     var u = JSON.parse(getCookie('expansions'));
+    console.log('u',u);
     var c = document.getElementsByName('expansion');
     for (let i = 0; i < c.length; i++) {
       if (u[i] == 0) {
@@ -106,6 +107,7 @@ function initGame() {
       u[i] = 1;
     }
   }
+  console.log('2u',u);
   expansions = u;
   document.cookie = `expansions=${JSON.stringify(u)}`;
   document.getElementById('initGame').style.display = 'none';
