@@ -4,13 +4,7 @@ window.onload = function() {
   if (getCookie('expansions')) {
     var u = JSON.parse(getCookie('expansions'));
     console.log('u',u);
-    var c = document.getElementsByName('expansion');
-    for (let i = 0; i < c.length; i++) {
-      if (u[i] == 0) {
-        c[i].checked == true;
-      }
-    }
-    initGame();
+    initGame(u);
   }
   if (getCookie('init')) {
     initBal = getCookie('init');
@@ -97,14 +91,18 @@ function makePlayerRow(player) {
   }
 }
 
-function initGame() {
+function initGame(a) {
   var c = document.getElementsByName('expansion');
   var x = [planesAndTrainsProps,spaceProps,americaProps];
-  var u = [0,0,0];
-  for (let i = 0, p = x[0], e = c[0]; i < c.length; i++, p = x[i], e = c[i]) {
-    if (e.checked) {
-      props = props.concat(p);
-      u[i] = 1;
+  if (a) {
+    var u = a;
+  } else {
+    var u = [0,0,0];
+    for (let i = 0, p = x[0], e = c[0]; i < c.length; i++, p = x[i], e = c[i]) {
+      if (e.checked) {
+        props = props.concat(p);
+        u[i] = 1;
+      }
     }
   }
   console.log('2u',u);
