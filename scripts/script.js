@@ -88,7 +88,7 @@ async function initScan() {
     ndef.addEventListener("reading", ({ message, serialNumber }) => {
       log(`> Serial Number: ${serialNumber}`);
       log(`> Records: (${message.records.length})`);
-      initScanB(JSON.parse(message));
+      initScanB(JSON.parse(message.records[0]));
     });
   } catch (error) {
     log("Argh! " + error);
@@ -96,6 +96,7 @@ async function initScan() {
 }
 
 async function initScanB(data) {
+  log('Starting B');
   console.log(data);
   try {
     const ndef = new NDEFReader();
