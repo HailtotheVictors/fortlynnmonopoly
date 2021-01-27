@@ -78,7 +78,7 @@ async function initScan() {
   if (document.getElementById('playerName').value == '') {
     return;
   }
-  log('V1.0.2');
+  log('V1.0.3');
   try {
     const ndef = new NDEFReader();
     await ndef.scan();
@@ -91,6 +91,7 @@ async function initScan() {
       log('x');
       log(`> Records: (${message.records.length})`);
       log('x2');
+      alert('x3',message.records[0]);
       alert(JSON.parse(message.records[0]));
       initScanB(JSON.parse(message.records[0]));
       log('Did prior');
