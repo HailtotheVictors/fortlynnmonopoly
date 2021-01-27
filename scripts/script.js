@@ -88,7 +88,9 @@ async function initScan() {
     });
     ndef.addEventListener("reading", ({ message, serialNumber }) => {
       log(`> Serial Number: ${serialNumber}`);
+      log('x');
       log(`> Records: (${message.records.length})`);
+      log('x2');
       log(JSON.parse(message.records[0]));
       initScanB(JSON.parse(message.records[0]));
       log('Did prior');
