@@ -20,6 +20,7 @@ window.onload = function() {
     launched = 'true';
     document.getElementById('gameBtn').style.color = 'red';
   }
+  add();
 }
 
 function add() {
