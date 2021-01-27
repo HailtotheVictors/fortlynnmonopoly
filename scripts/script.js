@@ -78,6 +78,7 @@ async function initScan() {
   if (document.getElementById('playerName').value == '') {
     return;
   }
+  log('V1.0.0');
   try {
     const ndef = new NDEFReader();
     await ndef.scan();
