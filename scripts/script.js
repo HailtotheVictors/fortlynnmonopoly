@@ -23,48 +23,6 @@ window.onload = function() {
   add();
 }
 
-function add() {
-  document.getElementById('scanBtn').addEventListener("click", async () => {
-    log("User clicked scan button");
-  
-    try {
-      const ndef = new NDEFReader();
-      await ndef.scan();
-      log("> Scan started");
-  
-      ndef.addEventListener("readingerror", () => {
-        log("Argh! Cannot read data from the NFC tag. Try another one?");
-      });
-  
-      ndef.addEventListener("reading", ({ message, serialNumber }) => {
-        log(`> Serial Number: ${serialNumber}`);
-        log(`> Records: (${message.records.length})`);
-      });
-    } catch (error) {
-      log("Argh! " + error);
-    }
-  });
-  
-  // writeButton.addEventListener("click", async () => {
-  //   log("User clicked write button");
-  
-  //   try {
-  //     const ndef = new NDEFReader();
-  //     await ndef.write("Hello world!");
-  //     log("> Message written");
-  //   } catch (error) {
-  //     log("Argh! " + error);
-  //   }
-  // });
-}
-
-function log(str) {
-  var par = document.getElementById('logCont');
-  var s = document.createElement('SPAN');
-  s.textContent = str;
-  par.append(s);
-}
-
 window.onresize = function() {
   document.getElementById('container').style.height = `${window.innerHeight - 100}px`;
 }
@@ -82,6 +40,84 @@ houses[2] = 'M12,3L2,12H5V20H19V12H22L12,3M9,8H13A2,2 0 0,1 15,10V12A2,2 0 0,1 1
 houses[3] = 'M12,3L22,12H19V20H5V12H2L12,3M15,11.5V10C15,8.89 14.1,8 13,8H9V10H13V12H11V14H13V16H9V18H13A2,2 0 0,0 15,16V14.5A1.5,1.5 0 0,0 13.5,13A1.5,1.5 0 0,0 15,11.5Z';
 houses[4] = 'M12,3L2,12H5V20H19V12H22L12,3M11,8H15V10H11V16H13V12H15V16C15,17.11 14.1,18 13,18H11A2,2 0 0,1 9,16V10C9,8.89 9.9,8 11,8Z';
 houses[5] = 'M12,3L2,12H5V20H19V12H22L12,3M9,8H11V16H15V18H9V8Z';
+
+//nfc
+
+function add() {
+  document.getElementById('scanBtn').addEventListener("click", async () => {
+    log("User clicked scan button");
+    try {
+      const ndef = new NDEFReader();
+      await ndef.scan();
+      log("> Scan started");
+      ndef.addEventListener("readingerror", () => {
+        log("Argh! Cannot read data from the NFC tag. Try another one?");
+      });
+      ndef.addEventListener("reading", ({ message, serialNumber }) => {
+        log(`> Serial Number: ${serialNumber}`);
+        log(`> Records: (${message.records.length})`);
+      });
+    } catch (error) {
+      log("Argh! " + error);
+    }
+  });
+  // writeButton.addEventListener("click", async () => {
+  //   log("User clicked write button");
+  
+  //   try {
+  //     const ndef = new NDEFReader();
+  //     await ndef.write("Hello world!");
+  //     log("> Message written");
+  //   } catch (error) {
+  //     log("Argh! " + error);
+  //   }
+  // });
+}
+
+async function initScan() {
+  if (document.getElementById('playerName').value == '') {
+    return;
+  }
+  try {
+    const ndef = new NDEFReader();
+    await ndef.scan();
+    log("> Scan started");
+    ndef.addEventListener("readingerror", () => {
+      log("Argh! Cannot read data from the NFC tag. Try another one?");
+    });
+    ndef.addEventListener("reading", ({ message, serialNumber }) => {
+      log(`> Serial Number: ${serialNumber}`);
+      log(`> Records: (${message.records.length})`);
+      initScanB(JSON.parse(message));
+    });
+  } catch (error) {
+    log("Argh! " + error);
+  }
+}
+
+async function initScanB(data) {
+  console.log(data);
+  try {
+    const ndef = new NDEFReader();
+    let id = secStr();
+    let newPlayer = new Player(document.getElementById('playerName').value,id,data.color);
+    players.push(newPlayer);
+    await ndef.write(JSON.stringify(newPlayer));
+    log("> Message written");
+  } catch (error) {
+    log("Argh! " + error);
+  }
+}
+
+function log(str) {
+  var par = document.getElementById('logCont');
+  var s = document.createElement('SPAN');
+  s.textContent = str;
+  par.append(s);
+  par.append(document.createElement('BR'));
+}
+
+//game
 
 class Player {
   constructor(name,card,color) {
