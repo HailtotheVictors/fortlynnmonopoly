@@ -89,6 +89,7 @@ async function initScan() {
       log(`> Serial Number: ${serialNumber}`);
       log(`> Records: (${message.records.length})`);
       initScanB(JSON.parse(message.records[0]));
+      log('Did prior');
     });
   } catch (error) {
     log("Argh! " + error);
