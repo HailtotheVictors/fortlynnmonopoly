@@ -10,9 +10,9 @@ window.onload = function() {
   }
   if (getCookie('players')) {
     var list = JSON.parse(getCookie('players'));
-    console.log(list);
     for (let player of list) {
       makePlayerRow(player);
+      players.push(player);
     }
   }
   if (getCookie('launched') == 'true') {
@@ -20,6 +20,48 @@ window.onload = function() {
     launched = 'true';
     document.getElementById('gameBtn').style.color = 'red';
   }
+}
+
+function add() {
+  document.getElementById('scanBtn').addEventListener("click", async () => {
+    log("User clicked scan button");
+  
+    try {
+      const ndef = new NDEFReader();
+      await ndef.scan();
+      log("> Scan started");
+  
+      ndef.addEventListener("readingerror", () => {
+        log("Argh! Cannot read data from the NFC tag. Try another one?");
+      });
+  
+      ndef.addEventListener("reading", ({ message, serialNumber }) => {
+        log(`> Serial Number: ${serialNumber}`);
+        log(`> Records: (${message.records.length})`);
+      });
+    } catch (error) {
+      log("Argh! " + error);
+    }
+});
+
+function log(str) {
+  var par = document.getElementById('logCont');
+  var s = document.createElement('SPAN');
+  s.textContent = str;
+  par.append(s);
+}
+  
+  writeButton.addEventListener("click", async () => {
+    log("User clicked write button");
+  
+    try {
+      const ndef = new NDEFReader();
+      await ndef.write("Hello world!");
+      log("> Message written");
+    } catch (error) {
+      log("Argh! " + error);
+    }
+  });
 }
 
 window.onresize = function() {
@@ -44,8 +86,8 @@ class Player {
   constructor(name,card,color) {
     this.bal = 1e6;
     this.name = name;
-    this.props = ['JQG','SERE','WLST'];
-    this.stocks = ['QAR'];
+    this.props = new List([{a:'JQG',d:0},{a:'SONL',d:0},{a:'I-312',d:0}]);
+    this.stocks = new List(['QAR']);
     this.card = card;
     this.color = color;
     makePlayerRow(this);
@@ -71,6 +113,25 @@ Player.prototype.getIndex = function() {
   }
 }
 
+class List {
+  constructor(list) {
+    this.arr = list;
+  }
+}
+List.prototype.bubble = function(term) {
+  var i = this.arr.indexOf(term);
+  if (i > -1) {
+    this.arr.splice(i,1);
+  }
+}
+List.prototype.boop = function(abbr) {
+  for (let i = 0, p = this.arr[0]; i < this.arr.length; i++, p = this.arr[i]) {
+    if (p.a.toUpperCase() == abbr.toUpperCase()) {
+      this.arr.splice(i,1);
+    }
+  }
+}
+
 function makePlayerRow(player) {
   var newRow = buildElem('DIV','playerRow',undefined,document.getElementsByClassName('page')[2]);
   newRow.setAttribute('data-card',player.card);
@@ -85,18 +146,21 @@ function makePlayerRow(player) {
   var newCoin = buildSVG(dc,'playerBtn','Collect Dividends',newTop,true);
   buildElem('DIV','playerBal',renderPrice(player.bal),newRow);
   var newBot = buildElem('DIV','playerGrid',undefined,newRow);
-  for (let abbr of player.props) {
+  for (let p of player.props.arr) {
+    let abbr = p.a;
     let prop = getPropFromAbbr(abbr);
     let newProp = buildElem('DIV','playerAsset',undefined,newBot);
+    newProp.setAttribute('data-abbr',prop.abbr);
     let newColor = buildElem('DIV','playerAssetColor',undefined,newProp);
     newColor.style.backgroundColor = prop.color;
     buildElem('DIV','playerAssetAbbr',abbr,newProp);
   }
   var secBot = buildElem('DIV','playerGrid',undefined,newRow);
   secBot.style.borderTop = '1px solid #333';
-  for (let abbr of player.stocks) {
+  for (let abbr of player.stocks.arr) {
     let stock = getStockFromAbbr(abbr);
     let newProp = buildElem('DIV','playerAsset',undefined,secBot);
+    newProp.setAttribute('data-abbr',stock.img.toUpperCase());
     let newColor = buildElem('DIV','playerAssetColor',undefined,newProp);
     newColor.style.backgroundColor = stock.accent;
     buildElem('DIV','playerAssetAbbr',abbr,newProp);
@@ -129,10 +193,6 @@ function initGame(a) {
   for (let prop of props) {
     buildPropRow(prop);
   }
-}
-
-function addPlayer() {
-  //nfc scan
 }
 
 function goToPage(num) {
