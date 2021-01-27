@@ -43,14 +43,7 @@ function add() {
     } catch (error) {
       log("Argh! " + error);
     }
-});
-
-function log(str) {
-  var par = document.getElementById('logCont');
-  var s = document.createElement('SPAN');
-  s.textContent = str;
-  par.append(s);
-}
+  });
   
   writeButton.addEventListener("click", async () => {
     log("User clicked write button");
@@ -63,6 +56,13 @@ function log(str) {
       log("Argh! " + error);
     }
   });
+}
+
+function log(str) {
+  var par = document.getElementById('logCont');
+  var s = document.createElement('SPAN');
+  s.textContent = str;
+  par.append(s);
 }
 
 window.onresize = function() {
