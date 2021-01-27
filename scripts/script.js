@@ -78,7 +78,7 @@ async function initScan() {
   if (document.getElementById('playerName').value == '') {
     return;
   }
-  log('V1.1.1');
+  log('V1.1.2');
   try {
     const ndef = new NDEFReader();
     await ndef.scan();
@@ -89,7 +89,7 @@ async function initScan() {
     ndef.addEventListener("reading", ({ message, serialNumber }) => {
       log(`> Serial Number: ${serialNumber}`);
       log(`> Records: (${message.records.length})`);
-      initScanB(message.records[0]);
+      initScanB(message);
     });
   } catch (error) {
     log("Argh! " + error);
@@ -105,7 +105,9 @@ async function initScanB(data) {
     let newPlayer = new Player(document.getElementById('playerName').value,id,data.color);
     log(JSON.stringify(newPlayer));
     players.push(newPlayer);
-    await ndef.write(JSON.stringify(newPlayer));
+    let obj = {color:data.color,id:id};
+    log(`obj:${JSON.stringify(obj)}`);
+    await ndef.write(JSON.stringify(obj));
     log("> Message written");
   } catch (error) {
     log("Arghx! " + error);
