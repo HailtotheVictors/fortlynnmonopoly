@@ -78,7 +78,7 @@ async function initScan() {
   if (document.getElementById('playerName').value == '') {
     return;
   }
-  log('V1.0.0');
+  log('V1.0.1');
   try {
     const ndef = new NDEFReader();
     await ndef.scan();
@@ -89,6 +89,7 @@ async function initScan() {
     ndef.addEventListener("reading", ({ message, serialNumber }) => {
       log(`> Serial Number: ${serialNumber}`);
       log(`> Records: (${message.records.length})`);
+      log(JSON.parse(message.records[0]));
       initScanB(JSON.parse(message.records[0]));
       log('Did prior');
     });
@@ -110,6 +111,21 @@ async function initScanB(data) {
   } catch (error) {
     log("Argh! " + error);
   }
+}
+
+async function test() {
+  await sleep(2000);
+  console.log('t');
+  testB();
+}
+
+async function testB() {
+  await sleep(2000);
+  console.log('b');
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function log(str) {
