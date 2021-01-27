@@ -115,6 +115,17 @@ async function initScanB(data) {
   }
 }
 
+async function initScanC() {
+  //console.log(data);
+  try {
+    const ndef = new NDEFReader();
+    await ndef.write(JSON.stringify({color:'limegreen'}));
+    log("> Message written");
+  } catch (error) {
+    log("Arghx! " + error);
+  }
+}
+
 async function test() {
   await sleep(2000);
   console.log('t');
