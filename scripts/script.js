@@ -78,7 +78,7 @@ async function initScan() {
   if (document.getElementById('playerName').value == '') {
     return;
   }
-  log('V1.0.9');
+  log('V1.0.10');
   try {
     const ndef = new NDEFReader();
     await ndef.scan();
@@ -96,13 +96,13 @@ async function initScan() {
       log(message.records[0]);
       log(message.records[0]);
       log('x3');
-      try {
-        JSON.parse(message.records[0]);
-      } catch (error) {
-        log(error);
-      }
-      alert(JSON.parse(message.records[0]));
-      initScanB(JSON.parse(message.records[0]));
+      // try {
+      //   JSON.parse(message.records[0]);
+      // } catch (error) {
+      //   log(error);
+      // }
+      //alert(JSON.parse(message.records[0]));
+      initScanB(message.records[0]);
       log('Did prior');
     });
   } catch (error) {
