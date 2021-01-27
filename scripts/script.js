@@ -78,7 +78,7 @@ async function initScan() {
   if (document.getElementById('playerName').value == '') {
     return;
   }
-  log('V1.0.7');
+  log('V1.0.8');
   try {
     const ndef = new NDEFReader();
     await ndef.scan();
@@ -91,9 +91,9 @@ async function initScan() {
       log('x');
       log(`> Records: (${message.records.length})`);
       log('x2');
-      log(typeof message);
-      log(typeof message.records);
-      log(typeof message.records[0]);
+      log(message);
+      log(message.records);
+      log(message.records[0]);
       log('x3');
       alert(JSON.parse(message.records[0]));
       initScanB(JSON.parse(message.records[0]));
