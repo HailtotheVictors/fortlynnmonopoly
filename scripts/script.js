@@ -78,7 +78,7 @@ async function initScan() {
   if (document.getElementById('playerName').value == '') {
     return;
   }
-  log('V1.1.3');
+  log('V1.1.4');
   try {
     const ndef = new NDEFReader();
     await ndef.scan();
@@ -119,7 +119,7 @@ async function initScanC() {
   //console.log(data);
   try {
     const ndef = new NDEFReader();
-    await ndef.write(JSON.stringify({color:'limegreen'}));
+    await ndef.write('hello');
     log("> Message written");
   } catch (error) {
     log("Arghx! " + error);
