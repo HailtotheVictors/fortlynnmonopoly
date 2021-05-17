@@ -1,79 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Monopoly Wallet</title>
-    <link rel="shortcut icon" href="assets/favicon.png">
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="scripts/script.js"></script>
-    <script src="scripts/props.js"></script>
-    <script src="scripts/stocks.js"></script>
+    <title>Fort Lynn Monopoly</title>
+    <link rel="shortcut icon" href="monopoly.png">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
-    <div id="header">
-      <img src="assets/icon_c.png">
-    </div>
-    <div id="container">
-      <div class="page">
-        <div id="initGame">
-          <label class="checkCont">Planes & Trains
-            <input type="checkbox" name="expansion">
-            <span class="checkmark"></span>
-          </label>
-          <label class="checkCont">Space Adventure
-            <input type="checkbox" name="expansion">
-            <span class="checkmark"></span>
-          </label>
-          <label class="checkCont">Cold War
-            <input type="checkbox" name="expansion">
-            <span class="checkmark"></span>
-          </label>
-          <button id="launchBtn" onclick="initGame()">Launch</button>
-        </div>
-        <div id="initPlayers" style="display: none;">
-          <input type="text" id="playerName"><br>
-          <svg id="nfcBtn" viewBox="0 0 24 24" onclick="initScan()">
-            <path d="M18,6H13A2,2 0 0,0 11,8V10.28C10.41,10.62 10,11.26 10,12A2,2 0 0,0 12,14C13.11,14 14,13.1 14,12C14,11.26 13.6,10.62 13,10.28V8H16V16H8V8H10V6H8L6,6V18H18M20,20H4V4H20M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20C21.11,22 22,21.1 22,20V4C22,2.89 21.11,2 20,2Z" />
-          </svg><br>
-          <button onclick="initScanC()">Write</button>
-          <button id="gameBtn" onclick="startGame()">Start Game</button>
-        </div>
-        <button id="resetBtn" onclick="reset()">Reset</button>
-        <button id="scanBtn">Scan</button>
-        <div id="logCont" style="color:white">
-          <span>HTML V1.1</span><br>
-        </div>
-      </div>
-      <div class="page"></div>
-      <div class="page"></div>
-      <div class="page"></div>
-      <div class="page"></div>
-      <div class="page"></div>
-    </div>
-    <div id="dock">
-      <svg role="button" onclick="goToPage(0)" viewBox="0 0 24 24" class="viewing">
-        <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z" />
-      </svg>
-      <svg role="button" onclick="goToPage(1)" viewBox="0 0 24 24">
-        <title>Transfer</title>
-        <path d="M15,14V11H18V9L22,12.5L18,16V14H15M14,7.7V9H2V7.7L8,4L14,7.7M7,10H9V15H7V10M3,10H5V15H3V10M13,10V12.5L11,14.3V10H13M9.1,16L8.5,16.5L10.2,18H2V16H9.1M17,15V18H14V20L10,16.5L14,13V15H17Z"/>
-      </svg>
-      <svg role="button" onclick="goToPage(2)" viewBox="0 0 24 24">
-        <title>Players</title>
-        <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
-      </svg>
-      <svg role="button" onclick="goToPage(3)" viewBox="0 0 24 24">
-        <title>Buy</title>
-        <path d="M17,18C15.89,18 15,18.89 15,20A2,2 0 0,0 17,22A2,2 0 0,0 19,20C19,18.89 18.1,18 17,18M1,2V4H3L6.6,11.59L5.24,14.04C5.09,14.32 5,14.65 5,15A2,2 0 0,0 7,17H19V15H7.42A0.25,0.25 0 0,1 7.17,14.75C7.17,14.7 7.18,14.66 7.2,14.63L8.1,13H15.55C16.3,13 16.96,12.58 17.3,11.97L20.88,5.5C20.95,5.34 21,5.17 21,5A1,1 0 0,0 20,4H5.21L4.27,2M7,18C5.89,18 5,18.89 5,20A2,2 0 0,0 7,22A2,2 0 0,0 9,20C9,18.89 8.1,18 7,18Z"/>
-      </svg>
-      <svg role="button" onclick="goToPage(4)" viewBox="0 0 24 24">
-        <title>Properties</title>
-        <path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/>
-      </svg>
-      <svg role="button" onclick="goToPage(5)" viewBox="0 0 24 24">
-        <title>Stocks</title>
-        <path d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,16.59L3.41,18L9.41,12L13.41,16L19.71,9.71L22,12V6H16Z"/>
-      </svg>
-    </div>
+    <section id="footer">
+      <div class="tab"></div>
+      <div class="tab"></div>
+      <div class="tab"></div>
+      <div class="tab"></div>
+      <div class="tab"></div>
+    </section>
   </body>
 </html>
