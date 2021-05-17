@@ -1,8 +1,9 @@
 window.onload = () => {
-  alert('V1.0.4');
+  alert('V1.0.5');
 }
 
 async function scan() {
+  console.log('zx');
   try {
     const ndef = new NDEFReader();
     await ndef.scan();
@@ -19,7 +20,7 @@ async function scan() {
   }
 }
 
-async function write() {
+async function writex() {
   try {
     const ndef = new NDEFReader();
     await ndef.write("Hello world!");
@@ -32,5 +33,6 @@ async function write() {
 function log(str) {
   let span = document.createElement('SPAN');
   span.textContent = str;
+  span.style.color = 'white';
   document.body.append(span);
 }
