@@ -7,22 +7,6 @@ body {
   --blue: rgb(44,44,192);
   --darkblue: rgb(30,30,130);
 }
-#footer {
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-  height: 60px;
-  background-color: aquamarine;
-  display: flex;
-}
-.tab {
-  height: 60px;
-  background-color: brown;
-  width: 100%;
-}
-button:focus, input:focus {
-  outline: none;
-}
 @font-face {
   font-family: 'Kabel';
   src: url('kabel.ttf') format('ttf');
@@ -33,8 +17,31 @@ button:focus, input:focus {
 @font-face {
   font-family: 'Kabel';
   src: url('Kabel-Heavy.woff') format('woff'),
-       url('Kabel-Heavy.woff2') format('woff2');
+  url('Kabel-Heavy.woff2') format('woff2');
   font-weight: bold;
   font-style: normal;
   font-display: swap;
+}
+#landing {
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  z-index: 3;
+  background-color: blueviolet;
+  display: none;
+}
+#footer {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: 60px;
+  display: flex;
+}
+.tab {
+  height: 60px;
+  background-color: brown;
+  width: 100%;
+}
+button:focus, input:focus {
+  outline: none;
 }
