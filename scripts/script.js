@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.0.8');
+  alert('V1.0.9');
 }
 
 async function scan() {
@@ -39,6 +39,7 @@ function log(str) {
 }
 
 ndef.onreading = event => {
+  log('> Has started reading')
   const message = event.message;
   for (const record of message.records) {
     log("Record type:  " + record.recordType);
