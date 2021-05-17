@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.0.5');
+  alert('V1.0.6');
 }
 
 async function scan() {
@@ -7,26 +7,26 @@ async function scan() {
   try {
     const ndef = new NDEFReader();
     await ndef.scan();
-    log("> Scan started");
-    ndef.addEventListener("readingerror", () => {
-      log("Argh! Cannot read data from the NFC tag. Try another one?");
+    log('> Scan started');
+    ndef.addEventListener('readingerror', () => {
+      log('Argh! Cannot read data from the NFC tag. Try another one?');
     });
-    ndef.addEventListener("reading", ({ message, serialNumber }) => {
+    ndef.addEventListener('reading', ({ message,serialNumber}) => {
       log(`> Serial Number: ${serialNumber}`);
-      log(`> Records: (${message.records.length},${JSON.stringify(message.records)})`);
+      log(`> Records: (${message.records.length},${JSON.stringify(message.records)},${JSON.stringify(message.records[0])})`);
     });
   } catch (error) {
-    log("Argh! " + error);
+    log('Argh! ' + error);
   }
 }
 
 async function writex() {
   try {
     const ndef = new NDEFReader();
-    await ndef.write("Hello world!");
-    log("> Message written");
+    await ndef.write('Hello world!');
+    log('> Message written');
   } catch (error) {
-    log("Argh! " + error);
+    log('Argh! ' + error);
   }
 }
 
@@ -35,4 +35,5 @@ function log(str) {
   span.textContent = str;
   span.style.color = 'white';
   document.body.append(span);
+  document.body.append(document.createElement('BR'));
 }
