@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.0.6');
+  alert('V1.0.7');
 }
 
 async function scan() {
@@ -37,3 +37,22 @@ function log(str) {
   document.body.append(span);
   document.body.append(document.createElement('BR'));
 }
+
+ndef.onreading = event => {
+  const message = event.message;
+  for (const record of message.records) {
+    console.log("Record type:  " + record.recordType);
+    console.log("MIME type:    " + record.mediaType);
+    console.log("Record id:    " + record.id);
+    switch (record.recordType) {
+      case "text":
+        // TODO: Read text record with record data, lang, and encoding.
+        break;
+      case "url":
+        // TODO: Read URL record with record data.
+        break;
+      default:
+        // TODO: Handle other records with record data.
+    }
+  }
+};
