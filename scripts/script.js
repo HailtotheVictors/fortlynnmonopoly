@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.0.7');
+  alert('V1.0.8');
 }
 
 async function scan() {
@@ -41,9 +41,9 @@ function log(str) {
 ndef.onreading = event => {
   const message = event.message;
   for (const record of message.records) {
-    console.log("Record type:  " + record.recordType);
-    console.log("MIME type:    " + record.mediaType);
-    console.log("Record id:    " + record.id);
+    log("Record type:  " + record.recordType);
+    log("MIME type:    " + record.mediaType);
+    log("Record id:    " + record.id);
     switch (record.recordType) {
       case "text":
         // TODO: Read text record with record data, lang, and encoding.
