@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.0.11');
+  alert('V1.0.12');
 }
 
 function scan() {
@@ -17,14 +17,15 @@ ndef.scan().then(() => {
 });
 }
 
-async function writex() {
-  try {
-    const ndef = new NDEFReader();
-    await ndef.write('Hello world!');
-    log('> Message written');
-  } catch (error) {
-    log('Argh! ' + error);
-  }
+function writex() {
+  const ndef = new NDEFReader();
+ndef.write({
+  records: [{ recordType: "url", data: "https://w3c.github.io/web-nfc/" }]
+}).then(() => {
+  console.log("Message written.");
+}).catch(error => {
+  console.log(`Write failed :-( try again: ${error}.`);
+});
 }
 
 function log(str) {
