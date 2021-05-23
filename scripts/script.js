@@ -1,8 +1,8 @@
 window.onload = () => {
-  alert('V1.0.14');
+  alert('V1.0.15');
 }
 
-async function scan() {
+async function scanold() {
 log("User clicked scan button");
 
   try {
@@ -22,6 +22,23 @@ log("User clicked scan button");
   } catch (error) {
     log("Argh! " + error);
   }
+}
+
+async function scan() {
+  if ("NDEFReader" in window) {
+    const ndef = new NDEFReader();
+    try {
+      await ndef.scan();
+      ndef.onreading = event => {
+        const decoder = new TextDecoder();
+        for (const record of event.message.records) {
+          consoleLog("Record type:  " + record.recordType);
+          consoleLog("MIME type:    " + record.mediaType);
+          consoleLog("=== data ===\n" + decoder.decode(record.data));
+        }
+	}
+  }
+}
 }
 
 async function writex() {
