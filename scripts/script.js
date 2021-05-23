@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.1.4');
+  alert('V1.1.5');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -32,7 +32,7 @@ async function addPlayer() {
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
       await ndef.scan();
-      ndef.onreading = event => {
+      ndef.onreading = async event => {
         let decoder = new TextDecoder();
         for (let record of event.message.records) {
           let card = JSON.parse(decoder.decode(record.data));
