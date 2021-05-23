@@ -71,6 +71,8 @@ async function writexold() {
   }
 }
 
+function consoleLog(str) { log(str); }
+
 function log(str) {
   let span = document.createElement('SPAN');
   span.textContent = str;
