@@ -12,7 +12,7 @@
   </head>
   <body>
     <button onclick="scan()">Scan</button>
-      <button onclick="writex()">Write</button>
+    <button onclick="writex()">Write</button>
     <section id="footer">
       <div class="tab"></div>
       <div class="tab"></div>
@@ -21,6 +21,13 @@
       <div class="tab"></div>
     </section>
     <section id="landing">
+      <input type="checkbox" id="coldWar" name="expansions">
+      <label for="coldWar">Cold War</label><br>
+      <input type="checkbox" id="planesTrains" name="expansions">
+      <label for="planesTrains">Planes & Trains</label><br>
+      <input type="checkbox" id="spaceAdventure" name="expansions">
+      <label for="spaceAdventure">Space Adventure</label><br>
+      <button id="addPlayer" onclick="addPlayer()">Add Player</button>
     </section>
   </body>
 </html>
