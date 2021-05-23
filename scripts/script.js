@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.1.2');
+  alert('V1.1.3');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -13,12 +13,11 @@ async function addPlayer() {
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
       await ndef.scan();
-      let d = new Date();
-      alert('scanned',d.getTime() % 1000);
       ndef.onreading = event => {
         let decoder = new TextDecoder();
         for (let record of event.message.records) {
           players.push(JSON.parse(decoder.decode(record.data)).id);
+          players = uniq(players);
           document.cookie = `players=${JSON.stringify(players)}`;
           alert(getCookie('players'));
           document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
@@ -85,4 +84,16 @@ function getCookie(cname) {
     }
   }
   return "";
+}
+
+function uniq(a) {
+  var prims = {'boolean':{},'number':{},'string':{}}, objs = [];
+  return a.filter(function(item) {
+    var type = typeof item;
+    if (type in prims) {
+      return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
+    } else {
+      return objs.indexOf(item) >= 0 ? false : objs.push(item);
+    }
+  });
 }
