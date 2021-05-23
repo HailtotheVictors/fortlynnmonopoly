@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.0.18');
+  alert('V1.0.19');
 }
 
 async function scan() {
@@ -11,8 +11,7 @@ async function scan() {
         const decoder = new TextDecoder();
         for (const record of event.message.records) {
           log('Record type:' + record.recordType);
-          log('MIME type:' + record.mediaType);
-          log('Date:' + decoder.decode(record.data));
+          log('Data:' + decoder.decode(record.data));
         }
       }
     } catch(error) {
