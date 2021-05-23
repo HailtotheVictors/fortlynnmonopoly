@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.0.16');
+  alert('V1.0.17');
 }
 
 async function scanold() {
