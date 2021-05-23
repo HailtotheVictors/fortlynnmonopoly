@@ -1,31 +1,39 @@
 window.onload = () => {
-  alert('V1.0.12');
+  alert('V1.0.13');
 }
 
-function scan() {
-  const ndef = new NDEFReader();
-ndef.scan().then(() => {
-  log("Scan started successfully.");
-  ndef.onreadingerror = () => {
-    log("Cannot read data from the NFC tag. Try another one?");
-  };
-  ndef.onreading = event => {
-    log(`NDEF message read. ${JSON.stringify(event.message)}`);
-  };
-}).catch(error => {
-  log(`Error! Scan failed to start: ${error}.`);
-});
+async function scan() {
+log("User clicked scan button");
+
+  try {
+    const ndef = new NDEFReader();
+    await ndef.scan();
+    log("> Scan started");
+
+    ndef.addEventListener("readingerror", () => {
+      log("Argh! Cannot read data from the NFC tag. Try another one?");
+    });
+
+    ndef.addEventListener("reading", ({ message, serialNumber }) => {
+      log(`> Serial Number: ${serialNumber}`);
+      log(`> Records: (${message.records.length})`);
+      log(`> Records: (${message.records[0]})`);
+    });
+  } catch (error) {
+    log("Argh! " + error);
+  }
 }
 
-function writex() {
-  const ndef = new NDEFReader();
-ndef.write({
-  records: [{ recordType: "url", data: "https://w3c.github.io/web-nfc/" }]
-}).then(() => {
-  console.log("Message written.");
-}).catch(error => {
-  console.log(`Write failed :-( try again: ${error}.`);
-});
+async function writex() {
+  log("User clicked write button");
+
+  try {
+    const ndef = new NDEFReader();
+    await ndef.write("Hello world!");
+    log("> Message written");
+  } catch (error) {
+    log("Argh! " + error);
+  }
 }
 
 function log(str) {
