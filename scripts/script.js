@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.1.3');
+  alert('V1.1.4');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -8,23 +8,60 @@ window.onload = () => {
 }
 
 var players = [];
+var gameSet = false;
+var initBalance = 1e6;
+
+function set() {
+  gameSet = true;
+  for (let e of document.getElementsByName('expansions')) {
+    if (e.checked) {
+      initBalance += Number(e.value);
+    }
+  }
+  document.cookie = `init=${initBalance}`;
+}
 
 async function addPlayer() {
+  if (!gameSet) {
+    return;
+  }
+  document.getElementById('addPlayer').style.backgroundColor = 'steelblue';
+  setTimeout(() => {
+    document.getElementById('addPlayer').style.backgroundColor = 'grey';
+  },500);
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
       await ndef.scan();
       ndef.onreading = event => {
         let decoder = new TextDecoder();
         for (let record of event.message.records) {
-          players.push(JSON.parse(decoder.decode(record.data)).id);
-          players = uniq(players);
+          let card = JSON.parse(decoder.decode(record.data));
+          if (players.indexOf(card.id) != -1) {
+            return;
+          }
+          players.push(card.id);
           document.cookie = `players=${JSON.stringify(players)}`;
           alert(getCookie('players'));
           document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
+          card.balance = initBalance;
+          card.props = [];
+          card.stocks = [];
+          await ndef.write(JSON.stringify(card));
+          document.cookie = `${card.id}=${JSON.stringify(card)}`;
         }
       }
   } else {
     alert('WTF');
+  }
+}
+
+function clear() {
+  document.cookie = 'players=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  document.cookie = 'init=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  if (getCookie('players') == '') {
+    document.getElementById('addPlayer').textContent = 'Add Player (0)';
+  } else {
+    document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
   }
 }
 
