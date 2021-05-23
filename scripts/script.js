@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.0.15');
+  alert('V1.0.16');
 }
 
 async function scanold() {
@@ -36,12 +36,30 @@ async function scan() {
           consoleLog("MIME type:    " + record.mediaType);
           consoleLog("=== data ===\n" + decoder.decode(record.data));
         }
-	}
+      }
+    } catch(error) {
+      consoleLog(error);
+    }
+  } else {
+    consoleLog("Web NFC is not supported.");
   }
-}
 }
 
 async function writex() {
+  if ("NDEFReader" in window) {
+    const ndef = new NDEFReader();
+    try {
+      await ndef.write("What Web Can Do Today");
+      consoleLog("NDEF message written!");
+    } catch(error) {
+      consoleLog(error);
+    }
+  } else {
+    consoleLog("Web NFC is not supported.");
+  }
+}
+
+async function writexold() {
   log("User clicked write button");
 
   try {
