@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.0.10');
+  alert('V1.0.11');
 }
 
 function scan() {
@@ -10,7 +10,7 @@ ndef.scan().then(() => {
     log("Cannot read data from the NFC tag. Try another one?");
   };
   ndef.onreading = event => {
-    log(`NDEF message read. ${event.message}`);
+    log(`NDEF message read. ${JSON.stringify(event.message)}`);
   };
 }).catch(error => {
   log(`Error! Scan failed to start: ${error}.`);
