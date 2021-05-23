@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.1.0');
+  alert('V1.1.1');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -15,13 +15,11 @@ async function addPlayer() {
       await ndef.scan();
       ndef.onreading = event => {
         let decoder = new TextDecoder();
-        for (let record of event.message.records) {
-          log('Record type:' + record.recordType);
-          log('Data:' + decoder.decode(record.data));
-          players.push(JSON.parse(decoder.decode(record.data)).id);
-          document.cookie = `players=${JSON.stringify(players)}`;
-          alert(getCookie('players'));
-        }
+        let record = event.message.records[0];
+        players.push(JSON.parse(decoder.decode(record.data)).id);
+        document.cookie = `players=${JSON.stringify(players)}`;
+        alert(getCookie('players'));
+        document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
       }
   } else {
     alert('WTF');
@@ -30,12 +28,12 @@ async function addPlayer() {
 
 async function scan() {
   if ('NDEFReader' in window) {
-    const ndef = new NDEFReader();
+    let ndef = new NDEFReader();
     try {
       await ndef.scan();
       ndef.onreading = event => {
-        const decoder = new TextDecoder();
-        for (const record of event.message.records) {
+        let decoder = new TextDecoder();
+        for (let record of event.message.records) {
           log('Record type:' + record.recordType);
           log('Data:' + decoder.decode(record.data));
         }
@@ -50,7 +48,7 @@ async function scan() {
 
 async function writex() {
   if ('NDEFReader' in window) {
-    const ndef = new NDEFReader();
+    let ndef = new NDEFReader();
     try {
       await ndef.write('What Web Can Do Today');
       log('NDEF message written!');
@@ -74,13 +72,13 @@ function getCookie(cname) {
   var name = cname + '=';
   var decodedCookie = decodeURIComponent(document.cookie);
   var ca = decodedCookie.split(';');
-  for(var i = 0; i <ca.length; i++) {
-    var c = ca[i];
+  for (let i = 0; i <ca.length; i++) {
+    let c = ca[i];
     while (c.charAt(0) == ' ') {
       c = c.substring(1);
     }
     if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
+      return c.substring(name.length,c.length);
     }
   }
   return "";
