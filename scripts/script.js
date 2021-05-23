@@ -1,5 +1,31 @@
 window.onload = () => {
-  alert('V1.0.19');
+  alert('V1.1.0');
+  if (getCookie('players') == '') {
+    document.getElementById('addPlayer').textContent = 'Add Player (0)';
+  } else {
+    document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
+  }
+}
+
+var players = [];
+
+async function addPlayer() {
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+      await ndef.scan();
+      ndef.onreading = event => {
+        let decoder = new TextDecoder();
+        for (let record of event.message.records) {
+          log('Record type:' + record.recordType);
+          log('Data:' + decoder.decode(record.data));
+          players.push(JSON.parse(decoder.decode(record.data)).id);
+          document.cookie = `players=${JSON.stringify(players)}`;
+          alert(getCookie('players'));
+        }
+      }
+  } else {
+    alert('WTF');
+  }
 }
 
 async function scan() {
@@ -42,4 +68,20 @@ function log(str) {
   span.style.color = 'white';
   document.body.append(span);
   document.body.append(document.createElement('BR'));
+}
+
+function getCookie(cname) {
+  var name = cname + '=';
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
 }
