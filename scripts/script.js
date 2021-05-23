@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.1.1');
+  alert('V1.1.2');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -13,13 +13,16 @@ async function addPlayer() {
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
       await ndef.scan();
+      let d = new Date();
+      alert('scanned',d.getTime() % 1000);
       ndef.onreading = event => {
         let decoder = new TextDecoder();
-        let record = event.message.records[0];
-        players.push(JSON.parse(decoder.decode(record.data)).id);
-        document.cookie = `players=${JSON.stringify(players)}`;
-        alert(getCookie('players'));
-        document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
+        for (let record of event.message.records) {
+          players.push(JSON.parse(decoder.decode(record.data)).id);
+          document.cookie = `players=${JSON.stringify(players)}`;
+          alert(getCookie('players'));
+          document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
+        }
       }
   } else {
     alert('WTF');
