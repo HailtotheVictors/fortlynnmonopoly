@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.0.13');
+  alert('V1.0.14');
 }
 
 async function scan() {
@@ -17,7 +17,7 @@ log("User clicked scan button");
     ndef.addEventListener("reading", ({ message, serialNumber }) => {
       log(`> Serial Number: ${serialNumber}`);
       log(`> Records: (${message.records.length})`);
-      log(`> Records: (${message.records[0]})`);
+      log(`> Records: (${JSON.stringify(message.records[0])})`);
     });
   } catch (error) {
     log("Argh! " + error);
