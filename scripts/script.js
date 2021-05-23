@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.1.5');
+  alert('V1.1.6');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -27,7 +27,7 @@ async function addPlayer() {
   }
   document.getElementById('addPlayer').style.backgroundColor = 'steelblue';
   setTimeout(() => {
-    document.getElementById('addPlayer').style.backgroundColor = 'grey';
+    document.getElementById('addPlayer').style.backgroundColor = 'rgb(149,149,149)';
   },500);
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
@@ -36,6 +36,7 @@ async function addPlayer() {
         let decoder = new TextDecoder();
         for (let record of event.message.records) {
           let card = JSON.parse(decoder.decode(record.data));
+          alert(JSON.stringify(card));
           if (players.indexOf(card.id) != -1) {
             return;
           }
@@ -46,8 +47,12 @@ async function addPlayer() {
           card.balance = initBalance;
           card.props = [];
           card.stocks = [];
-          await ndef.write(JSON.stringify(card));
-          document.cookie = `${card.id}=${JSON.stringify(card)}`;
+          try {
+            await ndef.write(JSON.stringify(card));
+            document.cookie = `${card.id}=${JSON.stringify(card)}`;
+          } catch(error) {
+            alert(error);
+          }
         }
       }
   } else {
