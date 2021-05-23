@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.1.7');
+  alert('V1.1.8');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -47,6 +47,7 @@ async function addPlayer() {
           card.balance = initBalance;
           card.props = [];
           card.stocks = [];
+          alert(JSON.stringify(card));
           try {
             await ndef.write(JSON.stringify(card));
             alert(JSON.stringify(card));
