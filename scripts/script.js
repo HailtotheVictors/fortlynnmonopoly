@@ -1,23 +1,20 @@
 window.onload = () => {
-  alert('V1.0.9');
+  alert('V1.0.10');
 }
 
-async function scan() {
-  console.log('zx');
-  try {
-    const ndef = new NDEFReader();
-    await ndef.scan();
-    log('> Scan started');
-    ndef.addEventListener('readingerror', () => {
-      log('Argh! Cannot read data from the NFC tag. Try another one?');
-    });
-    ndef.addEventListener('reading', ({ message,serialNumber}) => {
-      log(`> Serial Number: ${serialNumber}`);
-      log(`> Records: (${message.records.length},${JSON.stringify(message.records)},${JSON.stringify(message.records[0])})`);
-    });
-  } catch (error) {
-    log('Argh! ' + error);
-  }
+function scan() {
+  const ndef = new NDEFReader();
+ndef.scan().then(() => {
+  log("Scan started successfully.");
+  ndef.onreadingerror = () => {
+    log("Cannot read data from the NFC tag. Try another one?");
+  };
+  ndef.onreading = event => {
+    log(`NDEF message read. ${event.message}`);
+  };
+}).catch(error => {
+  log(`Error! Scan failed to start: ${error}.`);
+});
 }
 
 async function writex() {
@@ -38,22 +35,22 @@ function log(str) {
   document.body.append(document.createElement('BR'));
 }
 
-ndef.onreading = event => {
-  log('> Has started reading')
-  const message = event.message;
-  for (const record of message.records) {
-    log("Record type:  " + record.recordType);
-    log("MIME type:    " + record.mediaType);
-    log("Record id:    " + record.id);
-    switch (record.recordType) {
-      case "text":
-        // TODO: Read text record with record data, lang, and encoding.
-        break;
-      case "url":
-        // TODO: Read URL record with record data.
-        break;
-      default:
-        // TODO: Handle other records with record data.
-    }
-  }
-};
+// ndef.onreading = event => {
+//   log('> Has started reading')
+//   const message = event.message;
+//   for (const record of message.records) {
+//     log("Record type:  " + record.recordType);
+//     log("MIME type:    " + record.mediaType);
+//     log("Record id:    " + record.id);
+//     switch (record.recordType) {
+//       case "text":
+//         // TODO: Read text record with record data, lang, and encoding.
+//         break;
+//       case "url":
+//         // TODO: Read URL record with record data.
+//         break;
+//       default:
+//         // TODO: Handle other records with record data.
+//     }
+//   }
+// };
