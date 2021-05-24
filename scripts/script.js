@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.2.13');
+  alert('V1.3.0');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -8,6 +8,10 @@ window.onload = () => {
   document.getElementById('landing').style.height = `${window.innerHeight}px`;
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
+
+var players = [];
+var gameSet = false;
+var initBalance = 1e6;
 
 function loadAssets() {
   buildAssets(mainProperties);
@@ -29,12 +33,28 @@ function buildAssets(list) {
     let group = buildElem('DIV','propGroup',undefined,top);
     group.style.backgroundColor = p.color;
     buildElem('DIV','propName',p.name,top);
+    let d = 'M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z';
+    let more = buildElem('SVG','propMore','0 0 24 24',top);
+    more.addEventListener('click',function() { this.parentElement.nextElementSibling.classList.toggle('show'); } );
+    buildElem('PATH',undefined,d,more);
+    let grid = buildElem('DIV','propGrid',undefined,cont);
+    if (p.house && p.hotel) {
+      var titles = ['Group:','Price:','House:','Hotel:'];
+      var values = [p.group,rt(p.price),rt(p.house),rt(p.hotel)];
+    } else {
+      var titles = ['Group:','Price:'];
+      var values = [p.group,rt(p.price)];
+    }
+    if (p.rent) {
+      titles = titles.concat(['Rent:','1 House:','2 Houses:','3 Houses:','4 Houses:','Hotel:']);
+      values = values.concat([rt(p.rent[0]),rt(p.rent[1]),rt(p.rent[2]),rt(p.rent[3]),rt(p.rent[4]),rt(p.rent[5])]);
+    }
+    for (let i = 0, t = titles[0], v = values[0]; i < titles.length; i++, t = titles[i], v = values[i]) {
+      buildElem('DIV','propCell',t,grid);
+      buildElem('DIV','propCell',v,grid);
+    }
   }
 }
-
-var players = [];
-var gameSet = false;
-var initBalance = 1e6;
 
 function set() {
   gameSet = true;
@@ -225,4 +245,11 @@ function buildElem(tag,group,text,parent) {
     parent.append(elem);
   }
   return elem;
+}
+
+function rt(num) {
+  if (num < 1000) {
+    return `$${num}K`;
+  }
+  return `$${num/1000}M`;
 }
