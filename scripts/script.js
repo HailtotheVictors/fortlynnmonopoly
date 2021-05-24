@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.3.9');
+  alert('V1.4.0');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -12,6 +12,9 @@ var gameSet = false;
 var initBalance = 1e6;
 var bankCard;
 var propsLoaded = false;
+var propReset;
+var bank = false;
+var transCard;
 
 function loadAssets(arr) {
   buildAssets(mainProperties);
@@ -82,6 +85,7 @@ async function scanCard() {
             if (key == cipher(card.key)) {
               document.getElementsByClassName('tab')[4].style.display = 'flex';
               document.getElementsByClassName('tab')[5].style.display = 'flex';
+              bank = true;
             } else {
               alert('Incorrect Code');
             }
@@ -136,6 +140,98 @@ async function finalizeCard() {
     try {
       await ndef.write(JSON.stringify(bankCard));
       bankCard = null;
+    } catch(error) {
+      alert(error);
+    }
+  } else {
+    alert('WTF');
+  }
+}
+
+async function initProp() {
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    await ndef.scan();
+    ndef.onreading = async event => {
+      let decoder = new TextDecoder();
+      for (let record of event.message.records) {
+        propReset = JSON.parse(decoder.decode(record.data));
+        propReset.dvlpt = 0;
+      }
+    }
+  } else {
+    alert('WTF');
+  }
+}
+
+async function finalizeProp() {
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    try {
+      await ndef.write(JSON.stringify(propReset));
+      propReset = null;
+    } catch(error) {
+      alert(error);
+    }
+  } else {
+    alert('WTF');
+  }
+}
+
+function startTrans() {
+  var amount = Number(document.getElementById('transAmount').value);
+  if (amount < 1e3 || amount > 1e7) {
+    return;
+  }
+  document.getElementById('amountInput').style.display = 'none';
+  document.getElementById('message').style.display = 'block';
+  document.getElementById('message').textContent = 'Hand phone to other person';
+  document.getElementById('confirmAmount').textContent = rt(amount / 1000);
+  setTimeout(() => {
+    document.getElementById('message').style.display = 'none';
+    document.getElementById('confirm').style.display = 'block';
+  },3000);
+}
+
+function no() {
+  document.getElementById('confirm').style.display = 'none';
+  document.getElementById('message').textContent = 'Hand phone back';
+  document.getElementById('message').style.display = 'block';
+  setTimeout(() => {
+    document.getElementById('message').style.display = 'none';
+    document.getElementById('amountInput').style.display = 'flex';
+  },3000);
+}
+
+async function yes() {
+  document.getElementById('confirm').style.display = 'none';
+  document.getElementById('message').textContent = 'Scan Card';
+  document.getElementById('message').style.display = 'block';
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    await ndef.scan();
+    ndef.onreading = async event => {
+      let decoder = new TextDecoder();
+      for (let record of event.message.records) {
+        transCard = JSON.parse(decoder.decode(record.data));
+        transCard.balance -= Number(document.getElementById('transAmount').value);
+        document.getElementById('message').textContent = 'Wait to Scan Again';
+        setTimeout(finishYes,1000);
+      }
+    }
+  } else {
+    alert('WTF');
+  }
+}
+
+async function finishYes() {
+  document.getElementById('message').textContent = 'Scan Again';
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    try {
+      await ndef.write(JSON.stringify(transCard));
+      transCard = null;
+      document.getElementById('message').textContent = 'Hand Phone Back';
     } catch(error) {
       alert(error);
     }
@@ -225,6 +321,9 @@ function hexToDec(s) {
 function cipher(key) {
   var d = new Date();
   var t = Math.round(d.getTime() / 1e4);
-  var s = SHA256(t + key);
-  return hexToDec(s) % 1e6;
+  var s = String(hexToDec(SHA256(t + key)) % 1e6);
+  while (s.length < 6) {
+    s = `0${s}`;
+  }
+  return s;
 }
