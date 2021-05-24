@@ -7,6 +7,7 @@
     <script src="scripts/script.js"></script>
     <script src="scripts/props.js"></script>
     <script src="scripts/stocks.js"></script>
+    <script src="scripts/sha.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
@@ -23,6 +24,9 @@
         </svg>
       </section>
       <section class="page"></section>
+      <section class="page"></section>
+      <section class="page">dvlpt</section>
+      <section class="page">init</section>
     </main>
     <section id="footer">
       <div class="tab" onclick="page(0)">
@@ -40,18 +44,21 @@
           <path d="M7,5H21V7H7V5M7,13V11H21V13H7M4,4.5A1.5,1.5 0 0,1 5.5,6A1.5,1.5 0 0,1 4,7.5A1.5,1.5 0 0,1 2.5,6A1.5,1.5 0 0,1 4,4.5M4,10.5A1.5,1.5 0 0,1 5.5,12A1.5,1.5 0 0,1 4,13.5A1.5,1.5 0 0,1 2.5,12A1.5,1.5 0 0,1 4,10.5M7,19V17H21V19H7M4,16.5A1.5,1.5 0 0,1 5.5,18A1.5,1.5 0 0,1 4,19.5A1.5,1.5 0 0,1 2.5,18A1.5,1.5 0 0,1 4,16.5Z" />
         </svg>
       </div>
-    </section>
-    <section id="landing">
-      <input type="checkbox" id="planesTrains" value="400000" name="expansions">
-      <label for="planesTrains">Planes & Trains</label><br>
-      <input type="checkbox" id="spaceAdventure" value="650000" name="expansions">
-      <label for="spaceAdventure">Space Adventure</label><br>
-      <input type="checkbox" id="coldWar" value="950000" name="expansions">
-      <label for="coldWar">Cold War</label><br>
-      <button onclick="set()">Set</button><br>
-      <button id="addPlayer" onclick="addPlayer()">Add Player</button><br>
-      <button onclick="setBalance()">Set Balance</button><br>
-      <button onclick="startGame()">Start Game</button>
+      <div class="tab" onclick="page(3)">
+        <svg viewBox="0 0 24 24">
+          <path d="M11,13H13V16H16V11H18L12,6L6,11H8V16H11V13M12,1L21,5V11C21,16.55 17.16,21.74 12,23C6.84,21.74 3,16.55 3,11V5L12,1Z" />
+        </svg>
+      </div>
+      <div class="tab" style="display:none" onclick="page(4)">
+        <svg viewBox="0 0 24 24">
+          <path d="M15,20H9V12H4.16L12,4.16L19.84,12H15V20Z" />
+        </svg>
+      </div>
+      <div class="tab" style="display:none" onclick="page(5)">
+        <svg viewBox="0 0 24 24">
+          <path d="M12,2.6L9,12.4L2,19.9L12,17.6L22,20L15,12.5L12,2.6Z" />
+        </svg>
+      </div>
     </section>
   </body>
 </html>
