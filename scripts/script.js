@@ -1,11 +1,9 @@
 window.onload = () => {
-  alert('V1.3.4');
-  document.getElementById('landing').style.height = `${window.innerHeight}px`;
+  alert('V1.3.5');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
 window.onresize = () => {
-  document.getElementById('landing').style.height = `${window.innerHeight}px`;
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -103,9 +101,13 @@ async function scanCard() {
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         card = JSON.parse(decoder.decode(record.data));
-        alert(JSON.stringify(card));
-        if (card.id) {
-          alert(card.balance);
+        if (card.id == 'bank') {
+          let key = prompt('Enter Code:');
+          if (key == cipher(card.key)) {
+            document.getElementsByClassName('tab')[4].style.display = 'block';
+            document.getElementsByClassName('tab')[5].style.display = 'block';
+          }
+        } else if (card.id) {
           document.getElementById('scanId').textContent = capFirst(card.id);
           document.getElementById('scanBalance').textContent = `$${numberWithCommas(card.balance)}`;
         } else if (card.abbr) {
@@ -187,18 +189,6 @@ function log(str) {
   document.body.append(document.createElement('BR'));
 }
 
-function uniq(a) {
-  var prims = {'boolean':{},'number':{},'string':{}}, objs = [];
-  return a.filter(function(item) {
-    var type = typeof item;
-    if (type in prims) {
-      return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
-    } else {
-      return objs.indexOf(item) >= 0 ? false : objs.push(item);
-    }
-  });
-}
-
 function page(num) {
   var pages = document.getElementsByClassName('page');
   for (let e of pages) {
@@ -256,4 +246,28 @@ function capFirst(str) {
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');
+}
+
+function hexToDec(s) {
+  var i, j, digits = [0], carry;
+  for (i = 0; i < s.length; i ++) {
+    carry = parseInt(s.charAt(i), 16);
+    for (j = 0; j < digits.length; j ++) {
+      digits[j] = digits[j] * 16 + carry;
+      carry = digits[j] / 10 | 0;
+      digits[j] %= 10;
+    }
+    while (carry > 0) {
+      digits.push(carry % 10);
+      carry = carry / 10 | 0;
+    }
+  }
+  return Number(digits.reverse().join(''));
+}
+
+function cipher(key) {
+  var d = new Date();
+  var t = Math.round(d.getTime() / 1e4);
+  var s = SHA256(t + key);
+  return hexToDec(s) % 1e6;
 }
