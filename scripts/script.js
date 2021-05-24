@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V2.0.0');
+  alert('V2.0.1');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -92,6 +92,7 @@ async function scanCard() {
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         let card = JSON.parse(decoder.decode(record.data));
+        alert(track);
         if (track == 'setup') {
           return initCard(card);
         } else if (track == 'reset') {
@@ -282,6 +283,7 @@ function loadProp(card) {
 }
 
 function grabCard(card) {
+  alert('grab card');
   dvlptCard = card;
   dvlptCard.balance = Number(dvlptCard.balance);
   if (dvlptCard.balance > dvlptPrice && dvlptPrice > 0) {
