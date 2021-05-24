@@ -1,10 +1,15 @@
 window.onload = () => {
-  alert('V1.3.0');
+  alert('V1.3.1');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
     document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
   }
+  document.getElementById('landing').style.height = `${window.innerHeight}px`;
+  document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
+}
+
+window.onresize = () => {
   document.getElementById('landing').style.height = `${window.innerHeight}px`;
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
@@ -29,6 +34,7 @@ function loadAssets() {
 function buildAssets(list) {
   for (let p of list) {
     let cont = buildElem('DIV','propCont',undefined,document.getElementsByClassName('page')[2]);
+    cont.id = `prop${p.id}`;
     let top = buildElem('DIV','propTop',undefined,cont);
     let group = buildElem('DIV','propGroup',undefined,top);
     group.style.backgroundColor = p.color;
@@ -49,9 +55,9 @@ function buildAssets(list) {
       titles = titles.concat(['Rent:','1 House:','2 Houses:','3 Houses:','4 Houses:','Hotel:']);
       values = values.concat([rt(p.rent[0]),rt(p.rent[1]),rt(p.rent[2]),rt(p.rent[3]),rt(p.rent[4]),rt(p.rent[5])]);
     }
-    for (let i = 0, t = titles[0], v = values[0]; i < titles.length; i++, t = titles[i], v = values[i]) {
-      buildElem('DIV','propCell',t,grid);
-      buildElem('DIV','propCell',v,grid);
+    for (let i = 0; i < titles.length; i++) {
+      buildElem('DIV','propCell',titles[i],grid);
+      buildElem('DIV','propCell',values[i],grid);
     }
   }
 }
@@ -97,6 +103,27 @@ async function addPlayer() {
   }
 }
 
+async function scanCard() {
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    await ndef.scan();
+    ndef.onreading = async event => {
+      let decoder = new TextDecoder();
+      for (let record of event.message.records) {
+        card = JSON.parse(decoder.decode(record.data));
+        alert(JSON.stringify(card));
+        if (card.id) {
+          alert(card.balance);
+        } else if (card.abbr) {
+          alert(card.abbr);
+        }
+      }
+    }
+  } else {
+    alert('WTF');
+  }
+}
+
 async function setBalance() {
   card.balance = initBalance;
   if ('NDEFReader' in window) {
@@ -117,7 +144,7 @@ async function setBalance() {
 
 function startGame() {
   var start = prompt('Start Game?');
-  if (start != null) {
+  if (start != null && start != '') {
     document.getElementById('landing').style.display = 'none';
     loadAssets();
   }
