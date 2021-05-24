@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.5');
+  alert('V1.5.6');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -277,6 +277,9 @@ async function finishYes(sign) {
 }
 
 async function loadProp() {
+  if (dvlptProp) {
+    return;
+  }
   alert('Load prop');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
@@ -294,8 +297,8 @@ async function loadProp() {
         } else {
           dvlptPrice = 0;
         }
-        alert(dvlptProp.abbr);
-        alert(dvlptPrice);
+        alert('X ' + dvlptProp.abbr);
+        alert('X ' + dvlptPrice);
       }
     }
   } else {
@@ -304,6 +307,9 @@ async function loadProp() {
 }
 
 async function grabCard() {
+  if (dvlptCard || dvlptPrice) {
+    return;
+  }
   alert('grab card');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
