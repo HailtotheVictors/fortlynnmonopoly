@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V2.0.2');
+  alert('V2.0.3');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -21,6 +21,7 @@ var dvlptPrice;
 var dvlptCard;
 var launched = false;
 var track;
+//var writing = false;
 
 function loadAssets(arr) {
   buildAssets(mainProperties);
@@ -86,6 +87,9 @@ async function scanCard() {
     let ndef = new NDEFReader();
     await ndef.scan();
     ndef.onreading = event => {
+      // if (writing) {
+      //   return;
+      // }
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         let card = JSON.parse(decoder.decode(record.data));
@@ -146,12 +150,14 @@ function initCard(card) {
 }
 
 async function finalizeCard() {
+  //writing = true;
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
       await ndef.write(JSON.stringify(bankCard));
       bankCard = null;
       track = undefined;
+      //writing = false;
     } catch(error) {
       alert(error);
     }
@@ -167,12 +173,14 @@ function initProp(card) {
 }
 
 async function finalizeProp() {
+  //writing = true;
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
       await ndef.write(JSON.stringify(propReset));
       propReset = null;
       track = undefined;
+      //writing = false;
     } catch(error) {
       alert(error);
     }
@@ -236,6 +244,7 @@ function startYes(card) {
 }
 
 async function finishYes() {
+  //writing = true;
   inProgress = false;
   document.getElementById('message').textContent = 'Scan Again';
   if ('NDEFReader' in window) {
@@ -245,6 +254,7 @@ async function finishYes() {
     }
     inProgress = true;
     await ndef.write(JSON.stringify(transCard));
+    //writing = false;
     transCard = null;
     inProgress = false;
     if (track == -1) {
@@ -291,13 +301,15 @@ function grabCard(card) {
 }
 
 async function takeCard() {
+  //writing = true;
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
       await ndef.write(JSON.stringify(dvlptCard));
       dvlptCard = null;
       dvlptPrice = null;
-      track = undefined;
+      //writing = false;
+      track = 'dvlpt';
     } catch(error) {
       alert(error);
     }
@@ -307,11 +319,13 @@ async function takeCard() {
 }
 
 async function devlProp() {
+  //writing = true;
   alert('devl prop');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
       await ndef.write(JSON.stringify(dvlptProp));
+      //writing = false;
       dvlptProp = null;
       track = undefined;
     } catch(error) {
