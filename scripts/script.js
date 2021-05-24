@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V2.0.4');
+  alert('V3.0.0');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -86,12 +86,12 @@ async function scanCard() {
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
-    ndef.onreading = event => {
+    //ndef.onreading = event => {
       // if (writing) {
       //   return;
       // }
       let decoder = new TextDecoder();
-      for (let record of event.message.records) {
+      for (let record of message.records) {
         let card = JSON.parse(decoder.decode(record.data));
         alert(track);
         if (track == 'setup') {
@@ -133,7 +133,7 @@ async function scanCard() {
           document.getElementById(`prop${card.abbr}`).children[1].classList.add('show');
         }
       }
-    }
+    //}
   } else {
     alert('WTF');
   }
@@ -302,6 +302,7 @@ function grabCard(card) {
 
 async function takeCard() {
   //writing = true;
+  alert('take card');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
