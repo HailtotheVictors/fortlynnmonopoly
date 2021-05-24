@@ -5,6 +5,8 @@ window.onload = () => {
   } else {
     document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
   }
+  document.getElementById('landing').style.height = `${window.innerHeight}px`;
+  document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
 var players = [];
