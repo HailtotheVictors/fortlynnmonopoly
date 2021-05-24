@@ -18,10 +18,23 @@
         <div id="scanBalance"></div>
       </section>
       <section class="page">
-        <input id="transAmount" type="number" min="0">
-        <svg id="transaction" viewBox="0 0 24 24">
-          <path d="M15,14V11H18V9L22,12.5L18,16V14H15M14,7.7V9H2V7.7L8,4L14,7.7M7,10H9V15H7V10M3,10H5V15H3V10M13,10V12.5L11,14.3V10H13M9.1,16L8.5,16.5L10.2,18H2V16H9.1M17,15V18H14V20L10,16.5L14,13V15H17Z" />
-        </svg>
+        <div id="center">
+          <div class="transCont" style="display:flex" id="amountInput">
+            <input id="transAmount" type="number" min="0" max="1e7">
+            <svg id="transaction" onclick="startTrans()" viewBox="0 0 24 24">
+              <path d="M15,14V11H18V9L22,12.5L18,16V14H15M14,7.7V9H2V7.7L8,4L14,7.7M7,10H9V15H7V10M3,10H5V15H3V10M13,10V12.5L11,14.3V10H13M9.1,16L8.5,16.5L10.2,18H2V16H9.1M17,15V18H14V20L10,16.5L14,13V15H17Z" />
+            </svg>
+          </div>
+          <div class="transCont text" id="message"></div>
+          <div class="transCont" id="confirm">
+            <div class="transText" id="confirmAmount" style="color:gold;font-size:30px;">$0</div>
+            <div class="transText">Is the above amount correct?</div>
+            <div class="transText" style="display:flex">
+              <button onclick="yes()" class="yes">Yes</button>
+              <button onclick="no()" class="no">No</button>
+            </div>
+          </div>
+        </div>
       </section>
       <section class="page"></section>
       <section class="page"></section>
