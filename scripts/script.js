@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.3.3');
+  alert('V1.3.4');
   document.getElementById('landing').style.height = `${window.innerHeight}px`;
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
@@ -29,7 +29,7 @@ function loadAssets() {
 function buildAssets(list) {
   for (let p of list) {
     let cont = buildElem('DIV','propCont',undefined,document.getElementsByClassName('page')[2]);
-    cont.id = `prop${p.id}`;
+    cont.id = `prop${p.abbr}`;
     let top = buildElem('DIV','propTop',undefined,cont);
     let group = buildElem('DIV','propGroup',undefined,top);
     group.style.backgroundColor = p.color;
