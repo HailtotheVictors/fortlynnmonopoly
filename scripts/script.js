@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.1.11');
+  alert('V1.1.12');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -27,7 +27,7 @@ async function addPlayer() {
   }
   document.getElementById('addPlayer').style.backgroundColor = 'steelblue';
   setTimeout(() => {
-    document.getElementById('addPlayer').style.backgroundColor = 'rgb(213,213,213)';
+    document.getElementById('addPlayer').style.backgroundColor = 'rgb(234,234,234)';
   },500);
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
@@ -54,9 +54,6 @@ async function addPlayer() {
 async function setBalance() {
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
-    await ndef.scan();
-    card.balance = initBalance;
-    alert(JSON.stringify(card));
     try {
       await ndef.write(JSON.stringify(card));
       alert(JSON.stringify(card));
