@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.3.6');
+  alert('V1.3.7');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -63,34 +63,7 @@ function set() {
     }
   }
   alert(initBalance);
-}
-
-async function addPlayer() {
-  if (!gameSet) {
-    return;
-  }
-  document.getElementById('addPlayer').style.backgroundColor = 'steelblue';
-  setTimeout(() => {
-    document.getElementById('addPlayer').style.backgroundColor = 'rgb(234,234,234)';
-  },500);
-  if ('NDEFReader' in window) {
-    let ndef = new NDEFReader();
-    await ndef.scan();
-    ndef.onreading = async event => {
-      let decoder = new TextDecoder();
-      for (let record of event.message.records) {
-        card = JSON.parse(decoder.decode(record.data));
-        alert(JSON.stringify(card));
-        if (players.indexOf(card.id) != -1) {
-          return;
-        }
-        players.push(card.id);
-        document.getElementById('addPlayer').textContent = `addPlayer (${players.length})`;
-      }
-    }
-  } else {
-    alert('WTF');
-  }
+  document.getElementById('set').style.backgroundColor = 'rgb(64,64,64)';
 }
 
 async function scanCard() {
@@ -100,15 +73,13 @@ async function scanCard() {
     ndef.onreading = async event => {
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
-        card = JSON.parse(decoder.decode(record.data));
-        alert(card.id);
-        alert(card.id == 'bank');
+        let card = JSON.parse(decoder.decode(record.data));
         if (card.id == 'bank') {
           try {
             let key = prompt('Enter Code:');
             if (key == cipher(card.key)) {
-              document.getElementsByClassName('tab')[4].style.display = 'block';
-              document.getElementsByClassName('tab')[5].style.display = 'block';
+              document.getElementsByClassName('tab')[4].style.display = 'flex';
+              document.getElementsByClassName('tab')[5].style.display = 'flex';
             }
           } catch (error) {
             alert(error);
@@ -128,72 +99,44 @@ async function scanCard() {
   }
 }
 
-async function setBalance() {
-  card.balance = initBalance;
+async function initCard() {
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
-    try {
-      await ndef.write(JSON.stringify(card));
-      alert(JSON.stringify(card));
-      card = null;
-    } catch (error) {
-      alert(error);
-      card = null;
+    await ndef.scan();
+    ndef.onreading = async event => {
+      let decoder = new TextDecoder();
+      if (!gameSet) {
+        return;
+      }
+      for (let record of event.message.records) {
+        bankCard = JSON.parse(decoder.decode(record.data));
+        bankCard.planes = document.getElementsByName('expansions')[0].checked;
+        bankCard.space = document.getElementsByName('expansions')[1].checked;
+        bankCard.america = document.getElementsByName('expansions')[2].checked;
+        let d = new Date();
+        bankCard.unix = d.getTime();
+      }
     }
   } else {
     alert('WTF');
   }
 }
 
-function startGame() {
-  var start = prompt('Start Game?');
-  if (start != null && start != '') {
-    document.getElementById('landing').style.display = 'none';
-    loadAssets();
-  }
-}
-
-async function scan() {
+async function finalizeCard() {
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
-      await ndef.scan();
-      ndef.onreading = event => {
-        let decoder = new TextDecoder();
-        for (let record of event.message.records) {
-          log('Record type:' + record.recordType);
-          log('Data:' + decoder.decode(record.data));
-        }
-      }
+      await ndef.write(JSON.stringify(bankCard));
+      bankCard = null;
     } catch(error) {
-      log(error);
+      alert(error);
     }
   } else {
-    log('Web NFC is not supported.');
+    alert('WTF');
   }
 }
 
-async function writex() {
-  if ('NDEFReader' in window) {
-    let ndef = new NDEFReader();
-    try {
-      await ndef.write('What Web Can Do Today');
-      log('NDEF message written!');
-    } catch(error) {
-      log(error);
-    }
-  } else {
-    log('Web NFC is not supported.');
-  }
-}
-
-function log(str) {
-  let span = document.createElement('SPAN');
-  span.textContent = str;
-  span.style.color = 'white';
-  document.body.append(span);
-  document.body.append(document.createElement('BR'));
-}
+//resources
 
 function page(num) {
   var pages = document.getElementsByClassName('page');
