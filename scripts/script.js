@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.1');
+  alert('V1.5.2');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -294,6 +294,8 @@ async function loadProp() {
         } else {
           dvlptPrice = 0;
         }
+        alert(dvlptProp.abbr);
+        alert(dvlptPrice);
       }
     }
   } else {
