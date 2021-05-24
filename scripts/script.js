@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.1.13');
+  alert('V1.2.0');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
