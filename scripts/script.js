@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.4.5');
+  alert('V1.4.6');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -220,9 +220,10 @@ async function yes(sign) {
       for (let record of event.message.records) {
         try {
           transCard = JSON.parse(decoder.decode(record.data));
+          alert(sign);
           transCard.balance += sign * Number(document.getElementById('transAmount').value);
           document.getElementById('message').textContent = 'Wait to Scan Again';
-          setTimeout(finishYes,1000);
+          setTimeout(function() {finishYes(sign); },1000);
         } catch (error) {
           alert(error);
         }
@@ -233,7 +234,7 @@ async function yes(sign) {
   }
 }
 
-async function finishYes() {
+async function finishYes(sign) {
   inProgress = false;
   document.getElementById('message').textContent = 'Scan Again';
   if ('NDEFReader' in window) {
@@ -245,9 +246,17 @@ async function finishYes() {
       inProgress = true;
       await ndef.write(JSON.stringify(transCard));
       transCard = null;
-      document.getElementById('message').textContent = 'Hand Phone Back';
       inProgress = false;
-      setTimeout(function() { yes(1); },3000);
+      if (sign == -1) {
+        document.getElementById('message').textContent = 'Hand Phone Back';
+        setTimeout(function() { yes(1); },3000);
+      } else {
+        document.getElementById('message').textContent = 'Transaction Done';
+        setTimeout(() => {
+          document.getElementById('message').style.display = 'none';
+          document.getElementById('amountInput').style.display = 'flex';
+        },1000);
+      }
     } catch(error) {
       alert(error);
     }
