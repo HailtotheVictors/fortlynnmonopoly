@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.4.1');
+  alert('V1.4.2');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -75,7 +75,7 @@ async function scanCard() {
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
-    ndef.onreading = async event => {
+    ndef.onreading = event => {
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         let card = JSON.parse(decoder.decode(record.data));
@@ -115,7 +115,7 @@ async function initCard() {
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
-    ndef.onreading = async event => {
+    ndef.onreading = event => {
       let decoder = new TextDecoder();
       if (!gameSet) {
         return;
@@ -152,7 +152,7 @@ async function initProp() {
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
-    ndef.onreading = async event => {
+    ndef.onreading = event => {
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         propReset = JSON.parse(decoder.decode(record.data));
@@ -210,7 +210,7 @@ async function yes() {
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
-    ndef.onreading = async event => {
+    ndef.onreading = event => {
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         transCard = JSON.parse(decoder.decode(record.data));
