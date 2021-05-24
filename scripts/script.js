@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.2.10');
+  alert('V1.2.11');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -12,6 +12,7 @@ window.onload = () => {
 function loadAssets() {
   buildAssets(mainProperties);
   alert(document.getElementsByName('expansions').length);
+  alert(document.getElementsByName('expansions')[0].checked);
   if (document.getElementsByName('expansions')[0].checked) {
     alert(0);
     alert(planesAndTrains.length)
