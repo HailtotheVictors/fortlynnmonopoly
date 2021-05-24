@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.2.8');
+  alert('V1.2.9');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -11,16 +11,16 @@ window.onload = () => {
 
 function loadAssets() {
   buildAssets(mainProperties);
-  alert('P&T',document.getElementsByName('expansions')[0].checked)
-  alert('Space',document.getElementsByName('expansions')[1].checked)
-  alert('America',document.getElementsByName('expansions')[2].checked)
   if (document.getElementsByName('expansions')[0].checked) {
+    alert(0);
     buildAssets(planesAndTrains);
   }
   if (document.getElementsByName('expansions')[1].checked) {
+    alert(1);
     buildAssets(space);
   }
   if (document.getElementsByName('expansions')[2].checked) {
+    alert(2);
     buildAssets(america);
   }
 }
