@@ -72,6 +72,26 @@ input[type='checkbox']:checked {
   width: 100%;
   display: none;
 }
+.propCont {
+  width: 100%;
+  border-bottom: 1px solid #444;
+}
+.propTop {
+  height: 30px;
+  width: 100%;
+  display: flex;
+}
+.propGroup {
+  height: 30px;
+  width: 5px;
+  flex-shrink: 0;
+}
+.propName {
+  height: 30px;
+  line-height: 30px;
+  width: 100%;
+  padding-left: 5px;
+}
 button:focus, input:focus {
   outline: none;
 }
