@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.4.2');
+  alert('V1.4.3');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -213,10 +213,14 @@ async function yes() {
     ndef.onreading = event => {
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
-        transCard = JSON.parse(decoder.decode(record.data));
-        transCard.balance -= Number(document.getElementById('transAmount').value);
-        document.getElementById('message').textContent = 'Wait to Scan Again';
-        setTimeout(finishYes,1000);
+        try {
+          transCard = JSON.parse(decoder.decode(record.data));
+          transCard.balance -= Number(document.getElementById('transAmount').value);
+          document.getElementById('message').textContent = 'Wait to Scan Again';
+          setTimeout(finishYes,1000);
+        } catch (error) {
+          alert(error);
+        }
       }
     }
   } else {
