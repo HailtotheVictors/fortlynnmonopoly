@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.1.9');
+  alert('V1.1.10');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -27,7 +27,7 @@ async function addPlayer() {
   }
   document.getElementById('addPlayer').style.backgroundColor = 'steelblue';
   setTimeout(() => {
-    document.getElementById('addPlayer').style.backgroundColor = 'rgb(149,149,149)';
+    document.getElementById('addPlayer').style.backgroundColor = 'rgb(213,213,213)';
   },500);
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
@@ -35,7 +35,7 @@ async function addPlayer() {
       ndef.onreading = async event => {
         let decoder = new TextDecoder();
         for (let record of event.message.records) {
-          let card = JSON.parse(decoder.decode(record.data));
+          card = JSON.parse(decoder.decode(record.data));
           alert(JSON.stringify(card));
           if (players.indexOf(card.id) != -1) {
             return;
@@ -44,19 +44,24 @@ async function addPlayer() {
           document.cookie = `players=${JSON.stringify(players)}`;
           alert(getCookie('players'));
           document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
-          card.balance = initBalance;
-          alert(JSON.stringify(card));
-          try {
-            await ndef.write(JSON.stringify(card));
-            alert(JSON.stringify(card));
-            document.cookie = `${card.id}=${JSON.stringify(card)}`;
-          } catch(error) {
-            alert(error);
-          }
         }
       }
   } else {
     alert('WTF');
+  }
+}
+
+async function setBalance() {
+  card.balance = initBalance;
+  alert(JSON.stringify(card));
+  try {
+    await ndef.write(JSON.stringify(card));
+    alert(JSON.stringify(card));
+    document.cookie = `${card.id}=${JSON.stringify(card)}`;
+    card = null;
+  } catch (error) {
+    alert(error);
+    card = null;
   }
 }
 
