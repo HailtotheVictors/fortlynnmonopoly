@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.3.8');
+  alert('V1.3.9');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -11,16 +11,17 @@ var players = [];
 var gameSet = false;
 var initBalance = 1e6;
 var bankCard;
+var propsLoaded = false;
 
-function loadAssets() {
+function loadAssets(arr) {
   buildAssets(mainProperties);
-  if (document.getElementsByName('expansions')[0].checked) {
+  if (arr[0]) {
     buildAssets(planesAndTrains);
   }
-  if (document.getElementsByName('expansions')[1].checked) {
+  if (arr[1]) {
     buildAssets(space);
   }
-  if (document.getElementsByName('expansions')[2].checked) {
+  if (arr[2]) {
     buildAssets(america);
   }
 }
@@ -81,6 +82,8 @@ async function scanCard() {
             if (key == cipher(card.key)) {
               document.getElementsByClassName('tab')[4].style.display = 'flex';
               document.getElementsByClassName('tab')[5].style.display = 'flex';
+            } else {
+              alert('Incorrect Code');
             }
           } catch (error) {
             alert(error);
@@ -88,6 +91,10 @@ async function scanCard() {
         } else if (card.id) {
           document.getElementById('scanId').textContent = capFirst(card.id);
           document.getElementById('scanBalance').textContent = `$${numberWithCommas(card.balance)}`;
+          if (!propsLoaded) {
+            propsLoaded = true;
+            loadAssets([card.planes,card.space,card.america]);
+          }
         } else if (card.abbr) {
           page(2);
           document.getElementById(`prop${card.abbr}`).scrollIntoView();
