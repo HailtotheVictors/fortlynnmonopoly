@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.0');
+  alert('V1.5.1');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -233,6 +233,11 @@ async function yes(sign) {
           },5000);
           return;
         }
+        if (transCard.id == 'bank' && !bank) {
+          document.getElementById('message').style.display = 'none';
+          document.getElementById('amountInput').style.display = 'flex';
+          return;
+        }
         transCard.balance += sign * Number(document.getElementById('transAmount').value);
         transCard.balance = String(transCard.balance);
         document.getElementById('message').textContent = 'Wait to Scan Again';
@@ -272,6 +277,7 @@ async function finishYes(sign) {
 }
 
 async function loadProp() {
+  alert('Load prop');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
