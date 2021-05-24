@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.3.1');
+  alert('V1.3.2');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -114,8 +114,12 @@ async function scanCard() {
         alert(JSON.stringify(card));
         if (card.id) {
           alert(card.balance);
+          document.getElementById('scanId').textContent = capFirst(card.id);
+          document.getElementById('scanBalance').textContent = `$${numberWithCommas(card.balance)}`;
         } else if (card.abbr) {
-          alert(card.abbr);
+          page(2);
+          document.getElementById(`prop${card.abbr}`).scrollIntoView();
+          document.getElementById(`prop${card.abbr}`).children[1].classList.add('show');
         }
       }
     }
@@ -279,4 +283,12 @@ function rt(num) {
     return `$${num}K`;
   }
   return `$${num/1000}M`;
+}
+
+function capFirst(str) {
+  return str.substring(0,1).toUpperCase() + str.substring(1,str.length);
+}
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');
 }
