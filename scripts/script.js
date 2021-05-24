@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.2.9');
+  alert('V1.2.10');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -11,16 +11,20 @@ window.onload = () => {
 
 function loadAssets() {
   buildAssets(mainProperties);
+  alert(document.getElementsByName('expansions').length);
   if (document.getElementsByName('expansions')[0].checked) {
     alert(0);
+    alert(planesAndTrains.length)
     buildAssets(planesAndTrains);
   }
   if (document.getElementsByName('expansions')[1].checked) {
     alert(1);
+    alert(space.length)
     buildAssets(space);
   }
   if (document.getElementsByName('expansions')[2].checked) {
     alert(2);
+    alert(america.length);
     buildAssets(america);
   }
 }
