@@ -145,14 +145,19 @@ label {
   bottom: 0;
   color: gold;
 }
+#center {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 #transAmount {
   background-color: #333;
   border: none;
-  position: absolute;
   height: 50px;
-  width: calc(100% - 90px);
+  width: 100%;
   padding: 5px;
-  top: calc(50% - 30px);
   left: 10px;
   color: gold;
   font-family: 'Kabel', sans-serif;
@@ -162,11 +167,45 @@ label {
   height: 50px;
   width: 50px;
   padding: 5px;
-  position: absolute;
-  top: calc(50% - 30px);
-  right: 10px;
   background-color: #333;
   fill: gold;
+  flex-shrink: 0;
+}
+.transCont {
+  width: calc(100% - 20px);
+  display: none;
+}
+.transCont.text {
+  background-color: #333;
+  text-align: center;
+  color: white;
+  font-family: 'Kabel', sans-serif;
+  width: calc(100% - 30px);
+  padding: 5px;
+  font-size: 24px;
+}
+.transText {
+  background-color: #333;
+  text-align: center;
+  color: white;
+  font-family: 'Kabel', sans-serif;
+  width: 100%;
+  padding: 5px 0;
+  font-size: 24px;
+}
+.transText > button {
+  font-size: 24px;
+  font-family: 'Kabel', sans-serif;
+  width: 100%;
+  border: 2px solid currentColor;
+  background-color: #333;
+}
+.transText > button.yes {
+  color: green;
+}
+.transText > button.no {
+  margin-left: 5px;
+  color: red;
 }
 button:focus, input:focus {
   outline: none;
