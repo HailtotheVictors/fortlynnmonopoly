@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.3.5');
+  alert('V1.3.6');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -101,11 +101,17 @@ async function scanCard() {
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         card = JSON.parse(decoder.decode(record.data));
+        alert(card.id);
+        alert(card.id == 'bank');
         if (card.id == 'bank') {
-          let key = prompt('Enter Code:');
-          if (key == cipher(card.key)) {
-            document.getElementsByClassName('tab')[4].style.display = 'block';
-            document.getElementsByClassName('tab')[5].style.display = 'block';
+          try {
+            let key = prompt('Enter Code:');
+            if (key == cipher(card.key)) {
+              document.getElementsByClassName('tab')[4].style.display = 'block';
+              document.getElementsByClassName('tab')[5].style.display = 'block';
+            }
+          } catch (error) {
+            alert(error);
           }
         } else if (card.id) {
           document.getElementById('scanId').textContent = capFirst(card.id);
