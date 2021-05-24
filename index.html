@@ -26,7 +26,17 @@
       <section class="page"></section>
       <section class="page"></section>
       <section class="page">dvlpt</section>
-      <section class="page">init</section>
+      <section class="page">
+        <input type="checkbox" id="a" name="expansions" value="400000">
+        <label for="a">Planes & Trains</label><br>
+        <input type="checkbox" id="b" name="expansions" value="650000">
+        <label for="b">Space</label><br>
+        <input type="checkbox" id="c" name="expansions" value="950000">
+        <label for="c">America</label><br>
+        <button style="font-size:30px" id="set" onclick="set()">Set</button><br>
+        <button style="font-size:30px" onclick="initCard()">Init Card</button><br>
+        <button style="font-size:30px" onclick="finalizeCard()">Finalize Card</button>
+      </section>
     </main>
     <section id="footer">
       <div class="tab" onclick="page(0)">
