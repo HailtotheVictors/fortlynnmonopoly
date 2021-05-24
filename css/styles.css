@@ -71,6 +71,7 @@ input[type='checkbox']:checked {
   height: 100%;
   width: 100%;
   display: none;
+  position: relative;
 }
 .propCont {
   width: 100%;
@@ -116,6 +117,23 @@ input[type='checkbox']:checked {
   height: 30px;
   margin: 5px;
   fill: white;
+}
+#scanBtn {
+  height: 200px;
+  width: 200px;
+  border: none;
+  position: absolute;
+  top: calc(50% - 100px);
+  left: calc(50% - 100px);
+  background-color: #333;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  font-family: 'Kabel', sans-serif;
+  font-size: 36px;
 }
 button:focus, input:focus {
   outline: none;
