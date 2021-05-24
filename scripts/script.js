@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.2.5');
+  alert('V1.2.6');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -12,6 +12,7 @@ window.onload = () => {
 
 function loadAssets() {
   buildAssets(mainProperties);
+  alert(document.getElementsByName('expansions')[0].checked,document.getElementsByName('expansions')[1].checked,document.getElementsByName('expansions')[2].checked)
   if (document.getElementsByName('expansions')[0].checked) {
     buildAssets(planesAndTrains);
   }
