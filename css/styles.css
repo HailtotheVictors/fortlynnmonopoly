@@ -54,15 +54,23 @@ input[type='checkbox']:checked {
 }
 .tab {
   height: 60px;
-  background-color: brown;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #555;
+}
+.tab:nth-of-type(even) {
+  background-color: #666;
 }
 .tab > svg {
   height: 50px;
   fill: white;
+}
+.page {
+  height: 100%;
+  width: 100%;
+  display: none;
 }
 button:focus, input:focus {
   outline: none;
