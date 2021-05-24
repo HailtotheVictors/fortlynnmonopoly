@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.3');
+  alert('V1.5.4');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -304,6 +304,7 @@ async function loadProp() {
 }
 
 async function grabCard() {
+  alert('grab card');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
@@ -325,6 +326,7 @@ async function grabCard() {
 }
 
 async function takeCard() {
+  alert('take card');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
@@ -340,6 +342,7 @@ async function takeCard() {
 }
 
 async function devlProp() {
+  alert('devl prop');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
