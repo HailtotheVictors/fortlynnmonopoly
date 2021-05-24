@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.3.7');
+  alert('V1.3.8');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -10,6 +10,7 @@ window.onresize = () => {
 var players = [];
 var gameSet = false;
 var initBalance = 1e6;
+var bankCard;
 
 function loadAssets() {
   buildAssets(mainProperties);
