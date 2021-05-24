@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.2.2');
+  alert('V1.2.3');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -7,6 +7,16 @@ window.onload = () => {
   }
   document.getElementById('landing').style.height = `${window.innerHeight}px`;
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
+}
+
+function loadAssets() {
+  for (let p of mainProperties) {
+    let cont = buildElem('DIV','propCont',undefined,document.getElementsByClassName('page')[2]);
+    let top = buildElem('DIV','propTop',undefined,cont);
+    let group = buildElem('DIV','propGroup',undefined,top);
+    group.style.backgroundColor = p.color;
+    buildElem('DIV','propName',p.name,top);
+  }
 }
 
 var players = [];
@@ -165,4 +175,40 @@ function page(num) {
     e.style.display = 'none';
   }
   pages[num].style.display = 'block';
+}
+
+function buildElem(tag,group,text,parent) {
+  tag = tag.toLowerCase();
+  var ns = false;
+  if (tag == 'svg' || tag == 'path' || tag == 'title') {
+    ns = true;
+    var elem = document.createElementNS('http://www.w3.org/2000/svg',tag.toLowerCase());
+    if (tag == 'svg' && text) {
+      elem.setAttribute('viewBox',text);
+    } else if (tag == 'path') {
+      elem.setAttribute('d',text);
+    } else {
+      elem.textContent = text;
+    }
+  } else {
+    var elem = document.createElement(tag);
+  }
+  if (group) {
+    if (typeof group == 'string') {
+      elem.classList.add(group);
+    } else {
+      for (let g of group) {
+        elem.classList.add(g);
+      }
+    }
+  }
+  if (text != undefined && tag != 'img' && !ns) {
+    elem.textContent = text;
+  } else if (text && !ns) {
+    elem.src = text;
+  }
+  if (parent) {
+    parent.append(elem);
+  }
+  return elem;
 }
