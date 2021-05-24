@@ -16,6 +16,9 @@ var propReset;
 var bank = false;
 var transCard;
 var inProgress = false;
+var dvlptProp;
+var dvlptPrice;
+var dvlptCard;
 
 function loadAssets(arr) {
   buildAssets(mainProperties);
@@ -102,6 +105,8 @@ async function scanCard() {
           }
         } else if (card.abbr) {
           page(2);
+          document.getElementById('scanId').textContent = `Abbreviation: ${card.abbr}`;
+          document.getElementById('scanBalance').textContent = `Development: Level ${card.dvlpt}`;
           document.getElementById(`prop${card.abbr}`).scrollIntoView();
           document.getElementById(`prop${card.abbr}`).children[1].classList.add('show');
         }
@@ -219,8 +224,17 @@ async function yes(sign) {
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         transCard = JSON.parse(decoder.decode(record.data));
-        alert(sign);
+        transCard.balance = Number(transCard.balance);
+        if (transCard.balance < Number(document.getElementById('transAmount').value) && sign == -1) {
+          document.getElementById('message').textContent = 'Insufficient Funds';
+          setTimeout(() => {
+            document.getElementById('message').style.display = 'none';
+            document.getElementById('amountInput').style.display = 'flex';
+          },5000);
+          return;
+        }
         transCard.balance += sign * Number(document.getElementById('transAmount').value);
+        transCard.balance = String(transCard.balance);
         document.getElementById('message').textContent = 'Wait to Scan Again';
         setTimeout(function() {finishYes(sign); },1000);
       }
@@ -235,25 +249,94 @@ async function finishYes(sign) {
   document.getElementById('message').textContent = 'Scan Again';
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
+    if (inProgress) {
+      return;
+    }
+    inProgress = true;
+    await ndef.write(JSON.stringify(transCard));
+    transCard = null;
+    inProgress = false;
+    if (sign == -1) {
+      document.getElementById('message').textContent = 'Hand Phone Back';
+      setTimeout(function() { yes(1); },3000);
+    } else {
+      document.getElementById('message').textContent = 'Transaction Done';
+      setTimeout(() => {
+        document.getElementById('message').style.display = 'none';
+        document.getElementById('amountInput').style.display = 'flex';
+      },1000);
+    }
+  } else {
+    alert('WTF');
+  }
+}
+
+async function loadProp() {
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    await ndef.scan();
+    ndef.onreading = event => {
+      let decoder = new TextDecoder();
+      for (let record of event.message.records) {
+        dvlptProp = JSON.parse(decoder.decode(record.data));
+        if (dvlptProp.dvlpt < 5) {
+          if (dvlptProp.dvlpt == 4) {
+            dvlptPrice = getPropFromAbbr(dvlptProp.abbr).hotel;
+          } else {
+            dvlptPrice = getPropFromAbbr(dvlptProp.abbr).house;
+          }
+        } else {
+          dvlptPrice = 0;
+        }
+      }
+    }
+  } else {
+    alert('WTF');
+  }
+}
+
+async function grabCard() {
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    await ndef.scan();
+    ndef.onreading = event => {
+      let decoder = new TextDecoder();
+      for (let record of event.message.records) {
+        dvlptCard = JSON.parse(decoder.decode(record.data));
+        dvlptCard.balance = Number(dvlptCard.balance);
+        if (dvlptCard.balance > dvlptPrice && dvlptPrice > 0) {
+          dvlptCard.balance -= dvlptPrice;
+          dvlptProp.dvlpt++;
+        }
+        dvlptCard.balance = String(dvlptCard.balance);
+      }
+    }
+  } else {
+    alert('WTF');
+  }
+}
+
+async function takeCard() {
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
     try {
-      if (inProgress) {
-        return;
-      }
-      inProgress = true;
-      await ndef.write(JSON.stringify(transCard));
-      transCard = null;
-      inProgress = false;
-      if (sign == -1) {
-        document.getElementById('message').textContent = 'Hand Phone Back';
-        alert('Calling back with one');
-        setTimeout(function() { yes(1); },3000);
-      } else {
-        document.getElementById('message').textContent = 'Transaction Done';
-        setTimeout(() => {
-          document.getElementById('message').style.display = 'none';
-          document.getElementById('amountInput').style.display = 'flex';
-        },1000);
-      }
+      await ndef.write(JSON.stringify(dvlptCard));
+      dvlptCard = null;
+      dvlptPrice = null;
+    } catch(error) {
+      alert(error);
+    }
+  } else {
+    alert('WTF');
+  }
+}
+
+async function devlProp() {
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    try {
+      await ndef.write(JSON.stringify(dvlptProp));
+      dvlptProp = null;
     } catch(error) {
       alert(error);
     }
@@ -348,4 +431,12 @@ function cipher(key) {
     s = `0${s}`;
   }
   return s;
+}
+
+function getPropFromAbbr(abbr) {
+  for (let p of allProps) {
+    if (p.abbr == abbr) {
+      return p;
+    }
+  }
 }
