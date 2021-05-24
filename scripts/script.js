@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.2.6');
+  alert('V1.2.7');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -7,12 +7,10 @@ window.onload = () => {
   }
   document.getElementById('landing').style.height = `${window.innerHeight}px`;
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
-  loadAssets();
 }
 
 function loadAssets() {
   buildAssets(mainProperties);
-  alert(document.getElementsByName('expansions')[0].checked,document.getElementsByName('expansions')[1].checked,document.getElementsByName('expansions')[2].checked)
   if (document.getElementsByName('expansions')[0].checked) {
     buildAssets(planesAndTrains);
   }
@@ -101,6 +99,7 @@ function startGame() {
   var start = prompt('Start Game?');
   if (start != null) {
     document.getElementById('landing').style.display = 'none';
+    loadAssets();
   }
 }
 
