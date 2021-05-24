@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.2.3');
+  alert('V1.2.4');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -7,10 +7,24 @@ window.onload = () => {
   }
   document.getElementById('landing').style.height = `${window.innerHeight}px`;
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
+  loadAssets();
 }
 
 function loadAssets() {
-  for (let p of mainProperties) {
+  buildAssets(mainProperties);
+  if (document.getElementsByName('expansions')[0]) {
+    buildAssets(planesAndTrains);
+  }
+  if (document.getElementsByName('expansions')[1]) {
+    buildAssets(space);
+  }
+  if (document.getElementsByName('expansions')[2]) {
+    buildAssets(america);
+  }
+}
+
+function buildAssets(list) {
+  for (let p of list) {
     let cont = buildElem('DIV','propCont',undefined,document.getElementsByClassName('page')[2]);
     let top = buildElem('DIV','propTop',undefined,cont);
     let group = buildElem('DIV','propGroup',undefined,top);
