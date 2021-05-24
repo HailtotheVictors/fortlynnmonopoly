@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V2.0.1');
+  alert('V2.0.2');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -86,9 +86,6 @@ async function scanCard() {
     let ndef = new NDEFReader();
     await ndef.scan();
     ndef.onreading = event => {
-      if (track) {
-        return;
-      }
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         let card = JSON.parse(decoder.decode(record.data));
