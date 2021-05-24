@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.2.12');
+  alert('V1.2.13');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -11,18 +11,14 @@ window.onload = () => {
 
 function loadAssets() {
   buildAssets(mainProperties);
-  try {
-    if (document.getElementsByName('expansions')[0].checked) {
-      buildAssets(planesAndTrains);
-    }
-    if (document.getElementsByName('expansions')[1].checked) {
-      buildAssets(space);
-    }
-    if (document.getElementsByName('expansions')[2].checked) {
-      buildAssets(america);
-    }
-  } catch (error) {
-    alert(error);
+  if (document.getElementsByName('expansions')[0].checked) {
+    buildAssets(planesAndTrains);
+  }
+  if (document.getElementsByName('expansions')[1].checked) {
+    buildAssets(space);
+  }
+  if (document.getElementsByName('expansions')[2].checked) {
+    buildAssets(america);
   }
 }
 
