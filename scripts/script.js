@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V3.0.0');
+  alert('V3.0.1');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -86,10 +86,7 @@ async function scanCard() {
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
-    //ndef.onreading = event => {
-      // if (writing) {
-      //   return;
-      // }
+    try {
       let decoder = new TextDecoder();
       for (let record of message.records) {
         let card = JSON.parse(decoder.decode(record.data));
@@ -133,6 +130,9 @@ async function scanCard() {
           document.getElementById(`prop${card.abbr}`).children[1].classList.add('show');
         }
       }
+    } catch (error) {
+      alert(error);
+    }
     //}
   } else {
     alert('WTF');
