@@ -56,6 +56,13 @@ input[type='checkbox']:checked {
   height: 60px;
   background-color: brown;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.tab > svg {
+  height: 50px;
+  fill: white;
 }
 button:focus, input:focus {
   outline: none;
