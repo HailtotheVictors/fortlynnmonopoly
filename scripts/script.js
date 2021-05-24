@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.4.4');
+  alert('V1.4.5');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -204,7 +204,7 @@ function no() {
   },3000);
 }
 
-async function yes() {
+async function yes(sign) {
   document.getElementById('confirm').style.display = 'none';
   document.getElementById('message').textContent = 'Scan Card';
   document.getElementById('message').style.display = 'block';
@@ -220,7 +220,7 @@ async function yes() {
       for (let record of event.message.records) {
         try {
           transCard = JSON.parse(decoder.decode(record.data));
-          transCard.balance -= Number(document.getElementById('transAmount').value);
+          transCard.balance += sign * Number(document.getElementById('transAmount').value);
           document.getElementById('message').textContent = 'Wait to Scan Again';
           setTimeout(finishYes,1000);
         } catch (error) {
@@ -246,6 +246,8 @@ async function finishYes() {
       await ndef.write(JSON.stringify(transCard));
       transCard = null;
       document.getElementById('message').textContent = 'Hand Phone Back';
+      inProgress = false;
+      setTimeout(function() { yes(1); },3000);
     } catch(error) {
       alert(error);
     }
