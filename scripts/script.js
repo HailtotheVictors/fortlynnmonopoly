@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.2.0');
+  alert('V1.2.1');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -69,6 +69,13 @@ async function setBalance() {
     }
   } else {
     alert('WTF');
+  }
+}
+
+function startGame() {
+  var start = prompt('Start Game?');
+  if (start != null) {
+    document.getElementById('landing').style.display = 'none';
   }
 }
 
