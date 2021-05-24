@@ -95,6 +95,28 @@ input[type='checkbox']:checked {
   color: white;
   font-family: 'Kabel', sans-serif;
 }
+.propGrid {
+  display: none;
+  grid-template-columns: 25% 25% 25% 25%;
+  background-color: #333;
+}
+.propCell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #ddd;
+  font-family: 'Kabel', sans-serif;
+  font-size: 16px;
+}
+.propGrid.show {
+  display: grid;
+}
+.propMore {
+  height: 30px;
+  margin: 5px;
+  fill: white;
+}
 button:focus, input:focus {
   outline: none;
 }
