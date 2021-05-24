@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.1.10');
+  alert('V1.1.11');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -31,37 +31,43 @@ async function addPlayer() {
   },500);
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
-      await ndef.scan();
-      ndef.onreading = async event => {
-        let decoder = new TextDecoder();
-        for (let record of event.message.records) {
-          card = JSON.parse(decoder.decode(record.data));
-          alert(JSON.stringify(card));
-          if (players.indexOf(card.id) != -1) {
-            return;
-          }
-          players.push(card.id);
-          document.cookie = `players=${JSON.stringify(players)}`;
-          alert(getCookie('players'));
-          document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
+    await ndef.scan();
+    ndef.onreading = async event => {
+      let decoder = new TextDecoder();
+      for (let record of event.message.records) {
+        card = JSON.parse(decoder.decode(record.data));
+        alert(JSON.stringify(card));
+        if (players.indexOf(card.id) != -1) {
+          return;
         }
+        players.push(card.id);
+        document.cookie = `players=${JSON.stringify(players)}`;
+        alert(getCookie('players'));
+        document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
       }
+    }
   } else {
     alert('WTF');
   }
 }
 
 async function setBalance() {
-  card.balance = initBalance;
-  alert(JSON.stringify(card));
-  try {
-    await ndef.write(JSON.stringify(card));
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    await ndef.scan();
+    card.balance = initBalance;
     alert(JSON.stringify(card));
-    document.cookie = `${card.id}=${JSON.stringify(card)}`;
-    card = null;
-  } catch (error) {
-    alert(error);
-    card = null;
+    try {
+      await ndef.write(JSON.stringify(card));
+      alert(JSON.stringify(card));
+      document.cookie = `${card.id}=${JSON.stringify(card)}`;
+      card = null;
+    } catch (error) {
+      alert(error);
+      card = null;
+    }
+  } else {
+    alert('WTF');
   }
 }
 
