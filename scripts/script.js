@@ -158,3 +158,11 @@ function uniq(a) {
     }
   });
 }
+
+function page(num) {
+  var pages = document.getElementsByClassName('page');
+  for (let e of pages) {
+    e.style.display = 'none';
+  }
+  pages[num].style.display = 'block';
+}
