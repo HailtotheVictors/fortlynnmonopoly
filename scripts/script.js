@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.2.7');
+  alert('V1.2.8');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -11,6 +11,9 @@ window.onload = () => {
 
 function loadAssets() {
   buildAssets(mainProperties);
+  alert('P&T',document.getElementsByName('expansions')[0].checked)
+  alert('Space',document.getElementsByName('expansions')[1].checked)
+  alert('America',document.getElementsByName('expansions')[2].checked)
   if (document.getElementsByName('expansions')[0].checked) {
     buildAssets(planesAndTrains);
   }
