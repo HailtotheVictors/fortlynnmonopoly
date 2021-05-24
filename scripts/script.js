@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V2.0.3');
+  alert('V2.0.4');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
