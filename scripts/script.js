@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.4.0');
+  alert('V1.4.1');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -87,7 +87,7 @@ async function scanCard() {
               document.getElementsByClassName('tab')[5].style.display = 'flex';
               bank = true;
             } else {
-              alert('Incorrect Code');
+              alert('Incorrect Code: ' + cipher(card.key));
             }
           } catch (error) {
             alert(error);
