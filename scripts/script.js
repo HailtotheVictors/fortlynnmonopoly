@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.2');
+  alert('V1.5.3');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -287,9 +287,9 @@ async function loadProp() {
         dvlptProp = JSON.parse(decoder.decode(record.data));
         if (dvlptProp.dvlpt < 5) {
           if (dvlptProp.dvlpt == 4) {
-            dvlptPrice = getPropFromAbbr(dvlptProp.abbr).hotel;
+            dvlptPrice = getPropFromAbbr(dvlptProp.abbr).hotel * 1000;
           } else {
-            dvlptPrice = getPropFromAbbr(dvlptProp.abbr).house;
+            dvlptPrice = getPropFromAbbr(dvlptProp.abbr).house * 1000;
           }
         } else {
           dvlptPrice = 0;
