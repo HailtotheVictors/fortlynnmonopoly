@@ -1,10 +1,5 @@
 window.onload = () => {
-  alert('V1.3.2');
-  if (getCookie('players') == '') {
-    document.getElementById('addPlayer').textContent = 'Add Player (0)';
-  } else {
-    document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
-  }
+  alert('V1.3.3');
   document.getElementById('landing').style.height = `${window.innerHeight}px`;
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
@@ -70,7 +65,6 @@ function set() {
     }
   }
   alert(initBalance);
-  document.cookie = `init=${initBalance}`;
 }
 
 async function addPlayer() {
@@ -93,9 +87,7 @@ async function addPlayer() {
           return;
         }
         players.push(card.id);
-        document.cookie = `players=${JSON.stringify(players)}`;
-        alert(getCookie('players'));
-        document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
+        document.getElementById('addPlayer').textContent = `addPlayer (${players.length})`;
       }
     }
   } else {
@@ -135,7 +127,6 @@ async function setBalance() {
     try {
       await ndef.write(JSON.stringify(card));
       alert(JSON.stringify(card));
-      document.cookie = `${card.id}=${JSON.stringify(card)}`;
       card = null;
     } catch (error) {
       alert(error);
@@ -151,16 +142,6 @@ function startGame() {
   if (start != null && start != '') {
     document.getElementById('landing').style.display = 'none';
     loadAssets();
-  }
-}
-
-function clear() {
-  document.cookie = 'players=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-  document.cookie = 'init=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-  if (getCookie('players') == '') {
-    document.getElementById('addPlayer').textContent = 'Add Player (0)';
-  } else {
-    document.getElementById('addPlayer').textContent = `Add Player (${JSON.parse(getCookie('players')).length})`;
   }
 }
 
@@ -204,22 +185,6 @@ function log(str) {
   span.style.color = 'white';
   document.body.append(span);
   document.body.append(document.createElement('BR'));
-}
-
-function getCookie(cname) {
-  var name = cname + '=';
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for (let i = 0; i <ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length,c.length);
-    }
-  }
-  return "";
 }
 
 function uniq(a) {
