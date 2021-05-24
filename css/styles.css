@@ -77,20 +77,23 @@ input[type='checkbox']:checked {
   border-bottom: 1px solid #444;
 }
 .propTop {
-  height: 30px;
+  height: 40px;
   width: 100%;
   display: flex;
 }
 .propGroup {
-  height: 30px;
+  height: 40px;
   width: 5px;
   flex-shrink: 0;
 }
 .propName {
-  height: 30px;
-  line-height: 30px;
+  height: 40px;
+  line-height: 40px;
   width: 100%;
   padding-left: 5px;
+  font-size: 24px;
+  color: white;
+  font-family: 'Kabel', sans-serif;
 }
 button:focus, input:focus {
   outline: none;
