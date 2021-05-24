@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.1.12');
+  alert('V1.1.13');
   if (getCookie('players') == '') {
     document.getElementById('addPlayer').textContent = 'Add Player (0)';
   } else {
@@ -18,6 +18,7 @@ function set() {
       initBalance += Number(e.value);
     }
   }
+  alert(initBalance);
   document.cookie = `init=${initBalance}`;
 }
 
@@ -52,6 +53,7 @@ async function addPlayer() {
 }
 
 async function setBalance() {
+  card.balance = initBalance;
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
