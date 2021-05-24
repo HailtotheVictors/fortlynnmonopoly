@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.4.3');
+  alert('V1.4.4');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -15,6 +15,7 @@ var propsLoaded = false;
 var propReset;
 var bank = false;
 var transCard;
+var inProgress = false;
 
 function loadAssets(arr) {
   buildAssets(mainProperties);
@@ -211,6 +212,10 @@ async function yes() {
     let ndef = new NDEFReader();
     await ndef.scan();
     ndef.onreading = event => {
+      if (inProgress) {
+        return;
+      }
+      inProgress = true;
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         try {
@@ -229,10 +234,15 @@ async function yes() {
 }
 
 async function finishYes() {
+  inProgress = false;
   document.getElementById('message').textContent = 'Scan Again';
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
+      if (inProgress) {
+        return;
+      }
+      inProgress = true;
       await ndef.write(JSON.stringify(transCard));
       transCard = null;
       document.getElementById('message').textContent = 'Hand Phone Back';
@@ -324,7 +334,7 @@ function hexToDec(s) {
 
 function cipher(key) {
   var d = new Date();
-  var t = Math.round(d.getTime() / 1e4);
+  var t = Math.round(d.getTime() / (2 * 1e4));
   var s = String(hexToDec(SHA256(t + key)) % 1e6);
   while (s.length < 6) {
     s = `0${s}`;
