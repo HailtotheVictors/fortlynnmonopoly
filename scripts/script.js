@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V3.0.1');
+  alert('V1.5.8');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -19,9 +19,7 @@ var inProgress = false;
 var dvlptProp;
 var dvlptPrice;
 var dvlptCard;
-var launched = false;
 var track;
-//var writing = false;
 
 function loadAssets(arr) {
   buildAssets(mainProperties);
@@ -79,29 +77,16 @@ function set() {
 }
 
 async function scanCard() {
-  if (launched) {
-    return;
-  }
-  launched = true;
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
-    try {
+    ndef.onreading = event => {
+      if (track) {
+        return;
+      }
       let decoder = new TextDecoder();
-      for (let record of message.records) {
+      for (let record of event.message.records) {
         let card = JSON.parse(decoder.decode(record.data));
-        alert(track);
-        if (track == 'setup') {
-          return initCard(card);
-        } else if (track == 'reset') {
-          return initProp(card);
-        } else if (track == 1 || track == -1) {
-          return startYes(card);
-        } else if (track == 'dvlpt') {
-          return loadProp(card);
-        } else if (track == 'dvlpt2') {
-          return grabCard(card);
-        }
         if (card.id == 'bank') {
           try {
             let key = prompt('Enter Code:');
@@ -130,34 +115,48 @@ async function scanCard() {
           document.getElementById(`prop${card.abbr}`).children[1].classList.add('show');
         }
       }
-    } catch (error) {
-      alert(error);
     }
-    //}
+    ndef.onreading = '';
   } else {
     alert('WTF');
   }
 }
 
-function initCard(card) {
-  alert('init card');
-  bankCard = card;
-  bankCard.planes = document.getElementsByName('expansions')[0].checked;
-  bankCard.space = document.getElementsByName('expansions')[1].checked;
-  bankCard.america = document.getElementsByName('expansions')[2].checked;
-  let d = new Date();
-  bankCard.unix = d.getTime();
+async function initCard() {
+  track = 'setup';
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    await ndef.scan();
+    ndef.onreading = event => {
+      if (track != 'setup') {
+        return;
+      }
+      let decoder = new TextDecoder();
+      if (!gameSet) {
+        return;
+      }
+      for (let record of event.message.records) {
+        bankCard = JSON.parse(decoder.decode(record.data));
+        bankCard.planes = document.getElementsByName('expansions')[0].checked;
+        bankCard.space = document.getElementsByName('expansions')[1].checked;
+        bankCard.america = document.getElementsByName('expansions')[2].checked;
+        let d = new Date();
+        bankCard.unix = d.getTime();
+      }
+    }
+    ndef.onreading = '';
+  } else {
+    alert('WTF');
+  }
 }
 
 async function finalizeCard() {
-  //writing = true;
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
       await ndef.write(JSON.stringify(bankCard));
       bankCard = null;
       track = undefined;
-      //writing = false;
     } catch(error) {
       alert(error);
     }
@@ -166,21 +165,34 @@ async function finalizeCard() {
   }
 }
 
-function initProp(card) {
-  alert('init prop');
-  propReset = card;
-  propReset.dvlpt = 0;
+async function initProp() {
+  track = 'reset';
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    await ndef.scan();
+    ndef.onreading = event => {
+      if (track != 'reset') {
+        return;
+      }
+      let decoder = new TextDecoder();
+      for (let record of event.message.records) {
+        propReset = JSON.parse(decoder.decode(record.data));
+        propReset.dvlpt = 0;
+      }
+    }
+    ndef.onreading = '';
+  } else {
+    alert('WTF');
+  }
 }
 
 async function finalizeProp() {
-  //writing = true;
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
       await ndef.write(JSON.stringify(propReset));
       propReset = null;
       track = undefined;
-      //writing = false;
     } catch(error) {
       alert(error);
     }
@@ -190,14 +202,14 @@ async function finalizeProp() {
 }
 
 function startTrans() {
-  var amount = Math.round(Number(document.getElementById('transAmount').value) / 1e3) * 1e3;
+  var amount = Number(document.getElementById('transAmount').value);
   if (amount < 1e3 || amount > 1e7) {
     return;
   }
   document.getElementById('amountInput').style.display = 'none';
   document.getElementById('message').style.display = 'block';
   document.getElementById('message').textContent = 'Hand phone to other person';
-  document.getElementById('confirmAmount').textContent = rt(amount / 1e3);
+  document.getElementById('confirmAmount').textContent = rt(amount / 1000);
   setTimeout(() => {
     document.getElementById('message').style.display = 'none';
     document.getElementById('confirm').style.display = 'block';
@@ -214,37 +226,48 @@ function no() {
   },3000);
 }
 
-function yes() {
+async function yes(sign) {
   document.getElementById('confirm').style.display = 'none';
   document.getElementById('message').textContent = 'Scan Card';
   document.getElementById('message').style.display = 'block';
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    await ndef.scan();
+    ndef.onreading = event => {
+      if (inProgress) {
+        return;
+      }
+      inProgress = true;
+      let decoder = new TextDecoder();
+      for (let record of event.message.records) {
+        transCard = JSON.parse(decoder.decode(record.data));
+        transCard.balance = Number(transCard.balance);
+        if (transCard.balance < Number(document.getElementById('transAmount').value) && sign == -1) {
+          document.getElementById('message').textContent = 'Insufficient Funds';
+          setTimeout(() => {
+            document.getElementById('message').style.display = 'none';
+            document.getElementById('amountInput').style.display = 'flex';
+          },5000);
+          return;
+        }
+        if (transCard.id == 'bank' && !bank) {
+          document.getElementById('message').style.display = 'none';
+          document.getElementById('amountInput').style.display = 'flex';
+          return;
+        }
+        transCard.balance += sign * Number(document.getElementById('transAmount').value);
+        transCard.balance = String(transCard.balance);
+        document.getElementById('message').textContent = 'Wait to Scan Again';
+        setTimeout(function() {finishYes(sign); },1000);
+      }
+    }
+    ndef.onreading = '';
+  } else {
+    alert('WTF');
+  }
 }
 
-function startYes(card) {
-  alert('start yes');
-  transCard = card;
-  transCard.balance = Number(transCard.balance);
-  if (transCard.balance < Number(document.getElementById('transAmount').value) && track == -1) {
-    document.getElementById('message').textContent = 'Insufficient Funds';
-    setTimeout(() => {
-      document.getElementById('message').style.display = 'none';
-      document.getElementById('amountInput').style.display = 'flex';
-    },5000);
-    return;
-  }
-  if (transCard.id == 'bank' && !bank) {
-    document.getElementById('message').style.display = 'none';
-    document.getElementById('amountInput').style.display = 'flex';
-    return;
-  }
-  transCard.balance += track * Number(document.getElementById('transAmount').value);
-  transCard.balance = String(transCard.balance);
-  document.getElementById('message').textContent = 'Wait to Scan Again';
-  setTimeout(finishYes,1000);
-}
-
-async function finishYes() {
-  //writing = true;
+async function finishYes(sign) {
   inProgress = false;
   document.getElementById('message').textContent = 'Scan Again';
   if ('NDEFReader' in window) {
@@ -254,12 +277,11 @@ async function finishYes() {
     }
     inProgress = true;
     await ndef.write(JSON.stringify(transCard));
-    //writing = false;
     transCard = null;
     inProgress = false;
-    if (track == -1) {
+    if (sign == -1) {
       document.getElementById('message').textContent = 'Hand Phone Back';
-      setTimeout(function() { track = 1; },3000);
+      setTimeout(function() { yes(1); },3000);
     } else {
       document.getElementById('message').textContent = 'Transaction Done';
       setTimeout(() => {
@@ -272,36 +294,72 @@ async function finishYes() {
   }
 }
 
-function loadProp(card) {
-  alert('load prop');
-  dvlptProp = card;
-  if (dvlptProp.dvlpt < 5) {
-    if (dvlptProp.dvlpt == 4) {
-      dvlptPrice = getPropFromAbbr(dvlptProp.abbr).hotel * 1000;
-    } else {
-      dvlptPrice = getPropFromAbbr(dvlptProp.abbr).house * 1000;
-    }
-  } else {
-    dvlptPrice = 0;
+async function loadProp() {
+  if (dvlptProp) {
+    return;
   }
-  track = 'dvlpt2';
-  alert('X ' + dvlptProp.abbr);
-  alert('X ' + dvlptPrice);
+  track = 'dvlpt';
+  alert('Load prop');
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    await ndef.scan();
+    ndef.onreading = event => {
+      if (track != 'dvlpt') {
+        return;
+      }
+      let decoder = new TextDecoder();
+      for (let record of event.message.records) {
+        dvlptProp = JSON.parse(decoder.decode(record.data));
+        if (dvlptProp.dvlpt < 5) {
+          if (dvlptProp.dvlpt == 4) {
+            dvlptPrice = getPropFromAbbr(dvlptProp.abbr).hotel * 1000;
+          } else {
+            dvlptPrice = getPropFromAbbr(dvlptProp.abbr).house * 1000;
+          }
+        } else {
+          dvlptPrice = 0;
+        }
+        alert('X ' + dvlptProp.abbr);
+        alert('X ' + dvlptPrice);
+      }
+    }
+    ndef.onreading = '';
+  } else {
+    alert('WTF');
+  }
 }
 
-function grabCard(card) {
-  alert('grab card');
-  dvlptCard = card;
-  dvlptCard.balance = Number(dvlptCard.balance);
-  if (dvlptCard.balance > dvlptPrice && dvlptPrice > 0) {
-    dvlptCard.balance -= dvlptPrice;
-    dvlptProp.dvlpt++;
+async function grabCard() {
+  if (dvlptCard || dvlptPrice) {
+    return;
   }
-  dvlptCard.balance = String(dvlptCard.balance);
+  track = 'dvlpt2'
+  alert('grab card');
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    await ndef.scan();
+    ndef.onreading = event => {
+      if (track != 'dvlpt2') {
+        return;
+      }
+      let decoder = new TextDecoder();
+      for (let record of event.message.records) {
+        dvlptCard = JSON.parse(decoder.decode(record.data));
+        dvlptCard.balance = Number(dvlptCard.balance);
+        if (dvlptCard.balance > dvlptPrice && dvlptPrice > 0) {
+          dvlptCard.balance -= dvlptPrice;
+          dvlptProp.dvlpt++;
+        }
+        dvlptCard.balance = String(dvlptCard.balance);
+      }
+    }
+    ndef.onreading = '';
+  } else {
+    alert('WTF');
+  }
 }
 
 async function takeCard() {
-  //writing = true;
   alert('take card');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
@@ -309,7 +367,6 @@ async function takeCard() {
       await ndef.write(JSON.stringify(dvlptCard));
       dvlptCard = null;
       dvlptPrice = null;
-      //writing = false;
       track = 'dvlpt';
     } catch(error) {
       alert(error);
@@ -320,13 +377,11 @@ async function takeCard() {
 }
 
 async function devlProp() {
-  //writing = true;
   alert('devl prop');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
       await ndef.write(JSON.stringify(dvlptProp));
-      //writing = false;
       dvlptProp = null;
       track = undefined;
     } catch(error) {
