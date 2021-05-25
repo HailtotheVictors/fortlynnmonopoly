@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.12');
+  alert('V1.5.13');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -329,7 +329,7 @@ async function loadProp() {
 }
 
 async function grabCard() {
-  if (dvlptCard || dvlptPrice) {
+  if (!dvlptCard || !dvlptPrice) {
     return;
   }
   track = 'dvlpt2'
