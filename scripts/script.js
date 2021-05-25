@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.11');
+  alert('V1.5.12');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -341,9 +341,11 @@ async function grabCard() {
       if (track != 'dvlpt2') {
         return;
       }
+      alert('card grabbed');
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         dvlptCard = JSON.parse(decoder.decode(record.data));
+        alert(JSON.stringify(dvlptCard));
         dvlptCard.balance = Number(dvlptCard.balance);
         if (dvlptCard.balance > dvlptPrice && dvlptPrice > 0) {
           dvlptCard.balance -= dvlptPrice;
