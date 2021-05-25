@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.8');
+  alert('V1.5.9');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -80,13 +80,12 @@ async function scanCard() {
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
+    alert('scanned');
     ndef.onreading = event => {
-      if (track) {
-        return;
-      }
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         let card = JSON.parse(decoder.decode(record.data));
+        alert('cards');
         if (card.id == 'bank') {
           try {
             let key = prompt('Enter Code:');
