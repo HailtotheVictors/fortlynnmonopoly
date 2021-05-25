@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.10');
+  alert('V1.5.11');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -360,6 +360,7 @@ async function grabCard() {
 
 async function takeCard() {
   alert('take card');
+  alert(JSON.stringify(dvlptCard));
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
