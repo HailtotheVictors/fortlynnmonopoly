@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.9');
+  alert('V1.5.10');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -114,8 +114,8 @@ async function scanCard() {
           document.getElementById(`prop${card.abbr}`).children[1].classList.add('show');
         }
       }
+      ndef.onreading = '';
     }
-    ndef.onreading = '';
   } else {
     alert('WTF');
   }
@@ -142,8 +142,8 @@ async function initCard() {
         let d = new Date();
         bankCard.unix = d.getTime();
       }
+      ndef.onreading = '';
     }
-    ndef.onreading = '';
   } else {
     alert('WTF');
   }
@@ -178,8 +178,8 @@ async function initProp() {
         propReset = JSON.parse(decoder.decode(record.data));
         propReset.dvlpt = 0;
       }
+      ndef.onreading = '';
     }
-    ndef.onreading = '';
   } else {
     alert('WTF');
   }
@@ -259,8 +259,8 @@ async function yes(sign) {
         document.getElementById('message').textContent = 'Wait to Scan Again';
         setTimeout(function() {finishYes(sign); },1000);
       }
+      ndef.onreading = '';
     }
-    ndef.onreading = '';
   } else {
     alert('WTF');
   }
@@ -321,8 +321,8 @@ async function loadProp() {
         alert('X ' + dvlptProp.abbr);
         alert('X ' + dvlptPrice);
       }
+      ndef.onreading = '';
     }
-    ndef.onreading = '';
   } else {
     alert('WTF');
   }
@@ -351,8 +351,8 @@ async function grabCard() {
         }
         dvlptCard.balance = String(dvlptCard.balance);
       }
+      ndef.onreading = '';
     }
-    ndef.onreading = '';
   } else {
     alert('WTF');
   }
