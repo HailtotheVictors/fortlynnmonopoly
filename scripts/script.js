@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.13');
+  alert('V1.5.14');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -329,18 +329,11 @@ async function loadProp() {
 }
 
 async function grabCard() {
-  if (!dvlptCard || !dvlptPrice) {
-    return;
-  }
-  track = 'dvlpt2'
   alert('grab card');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
     ndef.onreading = event => {
-      if (track != 'dvlpt2') {
-        return;
-      }
       alert('card grabbed');
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
