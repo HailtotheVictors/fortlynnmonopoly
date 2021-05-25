@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.14');
+  alert('V1.5.15');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -80,12 +80,12 @@ async function scanCard() {
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
-    alert('scanned');
+    //alert('scanned');
     ndef.onreading = event => {
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         let card = JSON.parse(decoder.decode(record.data));
-        alert('cards');
+        //alert('cards');
         if (card.id == 'bank') {
           try {
             let key = prompt('Enter Code:');
@@ -237,6 +237,7 @@ async function yes(sign) {
         return;
       }
       inProgress = true;
+      alert(sign);
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         transCard = JSON.parse(decoder.decode(record.data));
@@ -267,6 +268,7 @@ async function yes(sign) {
 }
 
 async function finishYes(sign) {
+  alert('finish ' + sign);
   inProgress = false;
   document.getElementById('message').textContent = 'Scan Again';
   if ('NDEFReader' in window) {
@@ -278,7 +280,9 @@ async function finishYes(sign) {
     await ndef.write(JSON.stringify(transCard));
     transCard = null;
     inProgress = false;
+    alert('Call back');
     if (sign == -1) {
+      alert('hand back');
       document.getElementById('message').textContent = 'Hand Phone Back';
       setTimeout(function() { yes(1); },3000);
     } else {
