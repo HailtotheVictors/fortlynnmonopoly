@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.6.12');
+  alert('V1.6.13');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -516,13 +516,13 @@ async function addProp() {
             buildElem('DIV','propName',p.name,top);
             if (p.mult) {
               buildElem('DIV','propRent',rt(p.mult),top);
-              val = p.mult * 1000;
+              val = p.mult;
             } else if (rentProps.length == 1) {
               buildElem('DIV','propRent',rt(p.rent[card.dvlpt]),top);
-              val = p.rent[card.dvlpt] * 1000;
+              val = p.rent[card.dvlpt];
             } else if (card.dvlpt == 0) {
               buildElem('DIV','propRent',rt(Math.round(p.rent[0] * 1.5)),top);
-              val = Math.round(p.rent[0] * 1.5) * 1000;
+              val = Math.round(p.rent[0] * 1.5);
             } else {
               buildElem('DIV','propRent','$0',top);
               val = 0;
