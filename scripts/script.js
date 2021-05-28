@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.19');
+  alert('V1.6.0');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -19,6 +19,7 @@ var inProgress = false;
 var dvlptProp;
 var dvlptPrice;
 var dvlptCard;
+var rentProps = [];
 
 function loadAssets(arr) {
   buildAssets(mainProperties);
@@ -51,8 +52,8 @@ function buildAssets(list) {
       var titles = ['Group:','Price:','House:','Hotel:'];
       var values = [p.group,rt(p.price),rt(p.house),rt(p.hotel)];
     } else {
-      var titles = ['Group:','Price:'];
-      var values = [p.group,rt(p.price)];
+      var titles = ['Group:','Price:','Rent:'];
+      var values = [p.group,rt(p.price),`${rt(p.mult)} times number owned`];
     }
     if (p.rent) {
       titles = titles.concat(['Rent:','1 House:','2 Houses:','3 Houses:','4 Houses:','Hotel:']);
@@ -60,7 +61,10 @@ function buildAssets(list) {
     }
     for (let i = 0; i < titles.length; i++) {
       buildElem('DIV','propCell',titles[i],grid);
-      buildElem('DIV','propCell',values[i],grid);
+      let r = buildElem('DIV','propCell',values[i],grid);
+      if (values[i].indexOf('times') != -1) {
+        r.style.gridColumn = '2 / span 3';
+      }
     }
   }
 }
@@ -457,6 +461,55 @@ async function devlProp() {
       //track = undefined;
     } catch(error) {
       alert(error);
+    }
+  } else {
+    alert('WTF');
+  }
+}
+
+function goToRentScreen() {
+  document.getElementById('rentBtn').style.display = 'none';
+  document.getElementById('rentCont').style.display = 'flex';
+}
+
+async function addProp() {
+  alert('Add prop');
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    await ndef.scan();
+    ndef.onreading = event => {
+      let decoder = new TextDecoder();
+      for (let record of event.message.records) {
+        try {
+          let card = JSON.parse(decoder.decode(record.data));
+          if (rentProps.length == 0) {
+            document.getElementById('listRent').innerHTML = '';
+          }
+          rentProps.push(card);
+          let p = getPropFromAbbr(card.abbr);
+          if (!p) {
+            return;
+          }
+          document.getElementById('scanRent').textContent = 'Press Here to Scan Additional Properties in Color Group';
+          document.getElementById('chargeRent').style.display = 'block';
+          let top = buildElem('DIV','propTop',undefined,document.getElementById('listRent'));
+          let group = buildElem('DIV','propGroup',undefined,top);
+          group.style.backgroundColor = p.color;
+          buildElem('DIV','propName',p.name,top);
+          if (p.mult) {
+            buildElem('DIV','propRent',rt(p.mult),top);
+          } else if (rentProps.length == 1) {
+            buildElem('DIV','propRent',rt(p.rent[card.dvlpt]),top);
+          } else if (card.dvlpt == 0) {
+            buildElem('DIV','propRent',rt(p.rent[0] * 1.5),top);
+          } else {
+            buildElem('DIV','propRent','$0',top);
+          }
+        } catch (error) {
+          alert(error);
+        }
+      }
+      ndef.onreading = '';
     }
   } else {
     alert('WTF');
