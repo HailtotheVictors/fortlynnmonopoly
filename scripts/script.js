@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.6.1');
+  alert('V1.6.2');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -531,6 +531,11 @@ async function addProp() {
   } else {
     alert('WTF');
   }
+}
+
+function advRent() {
+  document.getElementById('scanRent').style.display = 'none';
+  document.getElementById('confirmRent').style.display = 'block';
 }
 
 //resources
