@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.16');
+  alert('V1.5.17');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -362,6 +362,7 @@ async function takeCard() {
   alert(JSON.stringify(dvlptCard));
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
+    alert(JSON.stringify(dvlptCard));
     try {
       await ndef.write(JSON.stringify(dvlptCard));
       dvlptCard = null;
