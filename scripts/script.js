@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.6.0');
+  alert('V1.6.1');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -20,6 +20,7 @@ var dvlptProp;
 var dvlptPrice;
 var dvlptCard;
 var rentProps = [];
+var rentPrice = 0;
 
 function loadAssets(arr) {
   buildAssets(mainProperties);
@@ -484,27 +485,43 @@ async function addProp() {
           let card = JSON.parse(decoder.decode(record.data));
           if (rentProps.length == 0) {
             document.getElementById('listRent').innerHTML = '';
+            document.getElementById('listRent2').innerHTML = '';
           }
-          rentProps.push(card);
           let p = getPropFromAbbr(card.abbr);
           if (!p) {
             return;
           }
+          if (rentProps.length > 0) {
+            console.log(p.color,rentProps[0].color);
+            if (p.color != rentProps[0].color) {
+              return;
+            }
+          }
+          rentProps.push(card);
           document.getElementById('scanRent').textContent = 'Press Here to Scan Additional Properties in Color Group';
           document.getElementById('chargeRent').style.display = 'block';
-          let top = buildElem('DIV','propTop',undefined,document.getElementById('listRent'));
-          let group = buildElem('DIV','propGroup',undefined,top);
-          group.style.backgroundColor = p.color;
-          buildElem('DIV','propName',p.name,top);
-          if (p.mult) {
-            buildElem('DIV','propRent',rt(p.mult),top);
-          } else if (rentProps.length == 1) {
-            buildElem('DIV','propRent',rt(p.rent[card.dvlpt]),top);
-          } else if (card.dvlpt == 0) {
-            buildElem('DIV','propRent',rt(p.rent[0] * 1.5),top);
-          } else {
-            buildElem('DIV','propRent','$0',top);
+          let ids = ['listRent','listRent2'];
+          let val = 0;
+          for (let id of ids) {
+            let top = buildElem('DIV','propTop',undefined,document.getElementById(id));
+            let group = buildElem('DIV','propGroup',undefined,top);
+            group.style.backgroundColor = p.color;
+            buildElem('DIV','propName',p.name,top);
+            if (p.mult) {
+              buildElem('DIV','propRent',rt(p.mult),top);
+              val = p.mult * 1000;
+            } else if (rentProps.length == 1) {
+              buildElem('DIV','propRent',rt(p.rent[card.dvlpt]),top);
+              val = p.rent[card.dvlpt] * 1000;
+            } else if (card.dvlpt == 0) {
+              buildElem('DIV','propRent',rt(Math.round(p.rent[0] * 1.5)),top);
+              val = Math.round(p.rent[0] * 1.5);
+            } else {
+              buildElem('DIV','propRent','$0',top);
+              val = 0;
+            }
           }
+          rentPrice += val;
         } catch (error) {
           alert(error);
         }
