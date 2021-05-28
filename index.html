@@ -40,10 +40,18 @@
       <section class="page">
         <div id="rentBtn" onclick="goToRentScreen()">Tap to Charge Rent</div>
         <div id="rentCont">
-          <div style="width:90%">
+          <div style="width:90%" id="addRent">
             <button id="scanRent" onclick="addProp()">Press Here to Scan Main Property Landed On</button>
             <div id="listRent"></div>
             <button id="chargeRent" style="display:none">Press Here to Charge Rent</button>
+          </div>
+          <div style="width:90%" id="confirmRent">
+            <div id="listRent2"></div>
+            <div class="transText">Is the above statement correct?</div>
+            <div class="transText">
+              <button class="yes">Yes</button>
+              <button class="no">No</button>
+            </div>
           </div>
         </div>
       </section>
