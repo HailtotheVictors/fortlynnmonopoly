@@ -74,6 +74,11 @@ label {
   width: 100%;
   display: flex;
 }
+.propLogo {
+  height: 34px;
+  width: 34px;
+  padding: 3px;
+}
 .propGroup {
   height: 40px;
   width: 5px;
@@ -86,6 +91,16 @@ label {
   padding-left: 5px;
   font-size: 24px;
   color: white;
+  font-family: 'Kabel', sans-serif;
+}
+.propRent {
+  height: 40px;
+  line-height: 40px;
+  width: auto;
+  flex-shrink: 0;
+  padding: 0 5px;
+  font-size: 24px;
+  color: gold;
   font-family: 'Kabel', sans-serif;
 }
 .propGrid {
@@ -110,7 +125,7 @@ label {
   margin: 5px;
   fill: white;
 }
-#scanBtn {
+#scanBtn, #rentBtn {
   height: 200px;
   width: 200px;
   border: none;
@@ -209,4 +224,22 @@ label {
 }
 button:focus, input:focus {
   outline: none;
+}
+#rentCont {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+#scanRent, #chargeRent {
+  font-size: 20px;
+  background-color: #333;
+  color: white;
+  font-family: 'Kabel', sans-serif;
+  border: none;
+  min-width: 100%;
 }
