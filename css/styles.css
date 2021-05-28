@@ -242,4 +242,5 @@ button:focus, input:focus {
   font-family: 'Kabel', sans-serif;
   border: none;
   min-width: 100%;
+  border: 2px solid white;
 }
