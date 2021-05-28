@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.6.13');
+  alert('V1.6.14');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -328,12 +328,22 @@ async function finishYes(sign) {
       transCard = null;
       inProgress = false;
       alert('Call back');
+      if (rentProps.length > 0) {
+        rentProps.length = 0;
+        rentPrice = 0;
+        document.getElementById('listRent').innerHTML = '';
+        document.getElementById('listRent2').innerHTML = '';
+        document.getElementById('confirmRent').style.display = 'none';
+        document.getElementById('rentCont').style.display = 'none';
+        document.getElementById('rentBtn').style.display = 'block';
+      }
       if (sign == -1) {
         alert('hand back');
         document.getElementById('message').textContent = 'Hand Phone Back';
         setTimeout(function() { yes(1); },3000);
       } else {
         document.getElementById('message').textContent = 'Transaction Done';
+        document.getElementById('transAmount').value = '';
         setTimeout(() => {
           document.getElementById('message').style.display = 'none';
           document.getElementById('amountInput').style.display = 'flex';
