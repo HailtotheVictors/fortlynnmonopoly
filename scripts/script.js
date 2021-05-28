@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.6.9');
+  alert('V1.6.10');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -542,6 +542,20 @@ async function addProp() {
 function advRent() {
   document.getElementById('addRent').style.display = 'none';
   document.getElementById('confirmRent').style.display = 'block';
+}
+
+function rentYes() {
+  document.getElementById('amountInput').style.display = 'none';
+  document.getElementById('message').textContent = 'Scan Card';
+  document.getElementById('message').style.display = 'block';
+  document.getElementById('transAmount').value = rentPrice * 1000;
+  page(1);
+  yes(-1);
+}
+
+function rentNo() {
+  document.getElementById('confirmRent').style.display = 'none';
+  document.getElementById('addRent').style.display = 'block';
 }
 
 //resources
