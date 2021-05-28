@@ -1,0 +1,37 @@
+<script src="scripts/sha.js"></script>
+<script>
+var key = '48a69c2ad68e96fb';
+window.onload = () => {
+  setInterval(() => {
+    document.getElementById('x').textContent = cipher();
+  },1000)
+}
+
+function cipher() {
+  var d = new Date();
+  var t = Math.round(d.getTime() / (2 * 1e4));
+  var s = String(hexToDec(SHA256(t + key)) % 1e6);
+  while (s.length < 6) {
+    s = `0${s}`;
+  }
+  return s;
+}
+
+function hexToDec(s) {
+  var i, j, digits = [0], carry;
+  for (i = 0; i < s.length; i ++) {
+    carry = parseInt(s.charAt(i), 16);
+    for (j = 0; j < digits.length; j ++) {
+      digits[j] = digits[j] * 16 + carry;
+      carry = digits[j] / 10 | 0;
+      digits[j] %= 10;
+    }
+    while (carry > 0) {
+      digits.push(carry % 10);
+      carry = carry / 10 | 0;
+    }
+  }
+  return Number(digits.reverse().join(''));
+}
+</script>
+<span style="font-size:36px;font-family:monospace;" id="x"></span>
