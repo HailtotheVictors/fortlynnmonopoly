@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.6.6');
+  alert('V1.6.7');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -493,11 +493,11 @@ async function addProp() {
             alert('returning 493');
             return;
           }
-          console.log(rentProps.length);
+          alert(rentProps.length);
           if (rentProps.length > 0) {
-            console.log(p.color,rentProps[0].color);
+            alert(p.color,rentProps[0].color);
             if (p.color != rentProps[0].color) {
-              console.log('returning 500');
+              alert('returning 500');
               return;
             }
           }
