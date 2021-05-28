@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.6.2');
+  alert('V1.6.3');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -488,6 +488,7 @@ async function addProp() {
             document.getElementById('listRent2').innerHTML = '';
           }
           let p = getPropFromAbbr(card.abbr);
+          alert(JSON.stringify(p));
           if (!p) {
             return;
           }
@@ -534,7 +535,7 @@ async function addProp() {
 }
 
 function advRent() {
-  document.getElementById('scanRent').style.display = 'none';
+  document.getElementById('addRent').style.display = 'none';
   document.getElementById('confirmRent').style.display = 'block';
 }
 
