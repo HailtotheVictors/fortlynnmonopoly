@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.6.14');
+  //alert('V1.6.14');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -111,7 +111,7 @@ function set() {
       initBalance += Number(e.value);
     }
   }
-  alert(initBalance);
+  //alert(initBalance);
   document.getElementById('set').style.backgroundColor = 'rgb(64,64,64)';
 }
 
@@ -133,7 +133,7 @@ async function scanCard() {
               document.getElementsByClassName('tab')[5].style.display = 'flex';
               bank = true;
             } else {
-              alert('Incorrect Code: ' + cipher(card.key));
+              alert('Incorrect Code');
             }
           } catch (error) {
             alert(error);
@@ -161,7 +161,7 @@ async function scanCard() {
       ndef.onreading = '';
     }
   } else {
-    alert('WTF');
+    alert('NFC not supported');
   }
 }
 
@@ -281,7 +281,7 @@ async function yes(sign) {
         return;
       }
       inProgress = true;
-      alert(sign);
+      //alert(sign);
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         transCard = JSON.parse(decoder.decode(record.data));
@@ -313,7 +313,7 @@ async function yes(sign) {
 }
 
 async function finishYes(sign) {
-  alert('finish ' + sign);
+  //alert('finish ' + sign);
   inProgress = false;
   document.getElementById('message').textContent = 'Scan Again';
   if ('NDEFReader' in window) {
@@ -326,7 +326,7 @@ async function finishYes(sign) {
       await ndef.write(JSON.stringify(transCard));
       transCard = null;
       inProgress = false;
-      alert('Call back');
+      //alert('Call back');
       if (rentProps.length > 0) {
         rentProps.length = 0;
         rentPrice = 0;
@@ -334,10 +334,10 @@ async function finishYes(sign) {
         document.getElementById('listRent2').innerHTML = '';
         document.getElementById('confirmRent').style.display = 'none';
         document.getElementById('rentCont').style.display = 'none';
-        document.getElementById('rentBtn').style.display = 'block';
+        document.getElementById('rentBtn').style.display = 'flex';
       }
       if (sign == -1) {
-        alert('hand back');
+        //alert('hand back');
         document.getElementById('message').textContent = 'Hand Phone Back';
         setTimeout(function() { yes(1); },3000);
       } else {
@@ -361,7 +361,7 @@ async function loadProp() {
     return;
   }
   //track = 'dvlpt';
-  alert('Load prop');
+  //alert('Load prop');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
@@ -381,8 +381,8 @@ async function loadProp() {
         } else {
           dvlptPrice = 0;
         }
-        alert('X ' + dvlptProp.abbr);
-        alert('X ' + dvlptPrice);
+        //alert('X ' + dvlptProp.abbr);
+        //alert('X ' + dvlptPrice);
       }
       ndef.onreading = '';
     }
@@ -396,7 +396,7 @@ async function loadStock() {
     return;
   }
   //track = 'dvlpt';
-  alert('Load prop');
+  //alert('Load prop');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
@@ -408,8 +408,8 @@ async function loadStock() {
       for (let record of event.message.records) {
         dvlptProp = JSON.parse(decoder.decode(record.data));
         dvlptPrice = -getStockFromAbbr(dvlptProp.abbr).dividend;
-        alert('X ' + dvlptProp.abbr);
-        alert('X ' + dvlptPrice);
+        //alert('X ' + dvlptProp.abbr);
+        //alert('X ' + dvlptPrice);
       }
       ndef.onreading = '';
     }
@@ -419,16 +419,16 @@ async function loadStock() {
 }
 
 async function grabCard() {
-  alert('grab card');
+  //alert('grab card');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
     ndef.onreading = event => {
-      alert('card grabbed');
+      //alert('card grabbed');
       let decoder = new TextDecoder();
       for (let record of event.message.records) {
         dvlptCard = JSON.parse(decoder.decode(record.data));
-        alert(JSON.stringify(dvlptCard));
+        //alert(JSON.stringify(dvlptCard));
         dvlptCard.balance = Number(dvlptCard.balance);
         if (dvlptCard.balance > dvlptPrice && dvlptPrice > 0) {
           dvlptCard.balance -= dvlptPrice;
@@ -444,11 +444,11 @@ async function grabCard() {
 }
 
 async function takeCard() {
-  alert('take card');
-  alert(JSON.stringify(dvlptCard));
+  //alert('take card');
+  //alert(JSON.stringify(dvlptCard));
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
-    alert(JSON.stringify(dvlptCard));
+    //alert(JSON.stringify(dvlptCard));
     try {
       await ndef.write(JSON.stringify(dvlptCard));
       dvlptCard = null;
@@ -463,7 +463,7 @@ async function takeCard() {
 }
 
 async function devlProp() {
-  alert('devl prop');
+  //alert('devl prop');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     try {
@@ -484,7 +484,7 @@ function goToRentScreen() {
 }
 
 async function addProp() {
-  alert('Add prop');
+  //alert('Add prop');
   if ('NDEFReader' in window) {
     let ndef = new NDEFReader();
     await ndef.scan();
@@ -503,13 +503,13 @@ async function addProp() {
           }
           if (rentProps.length > 0) {
             if (p.color != rentProps[0].color) {
-              alert('returning 500');
+              //alert('returning 500');
               return;
             }
           }
           for (let r of rentProps) {
             if (card.abbr == r.abbr) {
-              alert('returning 506');
+              //alert('returning 506');
               return;
             }
           }
@@ -555,7 +555,7 @@ function advRent() {
 }
 
 function rentYes() {
-  alert(rentPrice);
+  //alert(rentPrice);
   document.getElementById('amountInput').style.display = 'none';
   document.getElementById('message').textContent = 'Scan Card';
   document.getElementById('message').style.display = 'block';
