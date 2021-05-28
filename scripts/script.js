@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.6.5');
+  alert('V1.6.6');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -508,6 +508,7 @@ async function addProp() {
             }
           }
           rentProps.push(card);
+          alert('made it through');
           document.getElementById('scanRent').textContent = 'Press Here to Scan Additional Properties in Color Group';
           document.getElementById('chargeRent').style.display = 'block';
           let ids = ['listRent','listRent2'];
@@ -531,6 +532,7 @@ async function addProp() {
               val = 0;
             }
           }
+          alert('len' + document.getElementById('listRent').children.length);
           rentPrice += val;
         } catch (error) {
           alert(error);
