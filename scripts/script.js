@@ -152,7 +152,11 @@ async function scanCard() {
             document.getElementById('scanBalance').textContent = `Dividend: ${rt(getStockFromAbbr(card.abbr).dividend)}`;
           } else {
             document.getElementById('scanId').textContent = `Abbreviation: ${card.abbr}`;
-            document.getElementById('scanBalance').textContent = `Development: Level ${card.dvlpt}`;
+            if (card.dvlpt != undefined) {
+              document.getElementById('scanBalance').textContent = `Development: Level ${card.dvlpt}`;
+            } else {
+              document.getElementById('scanBalance').textContent = 'Development: N/A';
+            }
           }
           document.getElementById(`prop${card.abbr}`).scrollIntoView();
           document.getElementById(`prop${card.abbr}`).children[1].classList.add('show');
