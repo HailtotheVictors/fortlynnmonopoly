@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.18');
+  alert('V1.5.19');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -19,7 +19,6 @@ var inProgress = false;
 var dvlptProp;
 var dvlptPrice;
 var dvlptCard;
-//var track;
 
 function loadAssets(arr) {
   buildAssets(mainProperties);
@@ -32,6 +31,7 @@ function loadAssets(arr) {
   if (arr[2]) {
     buildAssets(america);
   }
+  buildStocks();
 }
 
 function buildAssets(list) {
@@ -57,6 +57,41 @@ function buildAssets(list) {
     if (p.rent) {
       titles = titles.concat(['Rent:','1 House:','2 Houses:','3 Houses:','4 Houses:','Hotel:']);
       values = values.concat([rt(p.rent[0]),rt(p.rent[1]),rt(p.rent[2]),rt(p.rent[3]),rt(p.rent[4]),rt(p.rent[5])]);
+    }
+    for (let i = 0; i < titles.length; i++) {
+      buildElem('DIV','propCell',titles[i],grid);
+      buildElem('DIV','propCell',values[i],grid);
+    }
+  }
+}
+
+function buildStocks() {
+  for (let p of stocks) {
+    let cont = buildElem('DIV','propCont',undefined,document.getElementsByClassName('page')[2]);
+    cont.id = `prop${p.abbr}`;
+    let top = buildElem('DIV','propTop',undefined,cont);
+    buildElem('IMG','propLogo',`assets/stocks/${p.img}.png`,top);
+    buildElem('DIV','propName',p.name,top);
+    let d = 'M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z';
+    let more = buildElem('SVG','propMore','0 0 24 24',top);
+    more.addEventListener('click',function() { this.parentElement.nextElementSibling.classList.toggle('show'); } );
+    buildElem('PATH',undefined,d,more);
+    let grid = buildElem('DIV','propGrid',undefined,cont);
+    if (['PPS','QAR','TBOC','LGUM','LEO','TFL'].includes(p.abbr)) { //stock stuff
+      var titles = ['Ticker:','Name:','Price:','Dividend:'];
+      var values = [p.abbr,p.name,rt(p.price),rt(p.dividend)];
+    } else { //prop stuff
+      if (p.house && p.hotel) {
+        var titles = ['Group:','Price:','House:','Hotel:'];
+        var values = [p.group,rt(p.price),rt(p.house),rt(p.hotel)];
+      } else {
+        var titles = ['Group:','Price:'];
+        var values = [p.group,rt(p.price)];
+      }
+      if (p.rent) {
+        titles = titles.concat(['Rent:','1 House:','2 Houses:','3 Houses:','4 Houses:','Hotel:']);
+        values = values.concat([rt(p.rent[0]),rt(p.rent[1]),rt(p.rent[2]),rt(p.rent[3]),rt(p.rent[4]),rt(p.rent[5])]);
+      }
     }
     for (let i = 0; i < titles.length; i++) {
       buildElem('DIV','propCell',titles[i],grid);
@@ -108,8 +143,13 @@ async function scanCard() {
           }
         } else if (card.abbr) {
           page(2);
-          document.getElementById('scanId').textContent = `Abbreviation: ${card.abbr}`;
-          document.getElementById('scanBalance').textContent = `Development: Level ${card.dvlpt}`;
+          if (['PPS','QAR','TBOC','LGUM','LEO','TFL'].includes(card.abbr)) {
+            document.getElementById('scanId').textContent = `Ticker: ${card.abbr}`;
+            document.getElementById('scanBalance').textContent = `Dividend: ${rt(getStockFromAbbr(card.abbr).dividend)}`;
+          } else {
+            document.getElementById('scanId').textContent = `Abbreviation: ${card.abbr}`;
+            document.getElementById('scanBalance').textContent = `Development: Level ${card.dvlpt}`;
+          }
           document.getElementById(`prop${card.abbr}`).scrollIntoView();
           document.getElementById(`prop${card.abbr}`).children[1].classList.add('show');
         }
@@ -336,6 +376,33 @@ async function loadProp() {
   }
 }
 
+async function loadStock() {
+  if (dvlptProp) {
+    return;
+  }
+  //track = 'dvlpt';
+  alert('Load prop');
+  if ('NDEFReader' in window) {
+    let ndef = new NDEFReader();
+    await ndef.scan();
+    ndef.onreading = event => {
+      // if (track != 'dvlpt') {
+      //   return;
+      // }
+      let decoder = new TextDecoder();
+      for (let record of event.message.records) {
+        dvlptProp = JSON.parse(decoder.decode(record.data));
+        dvlptPrice = -getStockFromAbbr(dvlptProp.abbr).dividend;
+        alert('X ' + dvlptProp.abbr);
+        alert('X ' + dvlptPrice);
+      }
+      ndef.onreading = '';
+    }
+  } else {
+    alert('WTF');
+  }
+}
+
 async function grabCard() {
   alert('grab card');
   if ('NDEFReader' in window) {
@@ -486,6 +553,14 @@ function cipher(key) {
 
 function getPropFromAbbr(abbr) {
   for (let p of allProps) {
+    if (p.abbr == abbr) {
+      return p;
+    }
+  }
+}
+
+function getStockFromAbbr(abbr) {
+  for (let p of stocks) {
     if (p.abbr == abbr) {
       return p;
     }
