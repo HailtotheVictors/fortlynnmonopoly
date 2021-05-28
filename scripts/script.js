@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.6.10');
+  alert('V1.6.11');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -289,6 +289,7 @@ async function yes(sign) {
         transCard.balance = Number(transCard.balance);
         if (transCard.balance < Number(document.getElementById('transAmount').value) && sign == -1) {
           document.getElementById('message').textContent = 'Insufficient Funds';
+          document.getElementById('transAmount').value = '';
           setTimeout(() => {
             document.getElementById('message').style.display = 'none';
             document.getElementById('amountInput').style.display = 'flex';
@@ -507,7 +508,7 @@ async function addProp() {
           document.getElementById('scanRent').textContent = 'Press Here to Scan Additional Properties in Color Group';
           document.getElementById('chargeRent').style.display = 'block';
           let ids = ['listRent','listRent2'];
-          let val = 0;
+          let val;
           for (let id of ids) {
             let top = buildElem('DIV','propTop',undefined,document.getElementById(id));
             let group = buildElem('DIV','propGroup',undefined,top);
@@ -521,12 +522,14 @@ async function addProp() {
               val = p.rent[card.dvlpt] * 1000;
             } else if (card.dvlpt == 0) {
               buildElem('DIV','propRent',rt(Math.round(p.rent[0] * 1.5)),top);
-              val = Math.round(p.rent[0] * 1.5);
+              val = Math.round(p.rent[0] * 1.5) * 1000;
             } else {
               buildElem('DIV','propRent','$0',top);
               val = 0;
             }
           }
+          alert(val + typeof val);
+          alert(rentPrice + typeof rentPrice);
           rentPrice += val;
         } catch (error) {
           alert(error);
