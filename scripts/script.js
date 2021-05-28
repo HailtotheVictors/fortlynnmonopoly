@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.5.17');
+  alert('V1.5.18');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -277,20 +277,24 @@ async function finishYes(sign) {
       return;
     }
     inProgress = true;
-    await ndef.write(JSON.stringify(transCard));
-    transCard = null;
-    inProgress = false;
-    alert('Call back');
-    if (sign == -1) {
-      alert('hand back');
-      document.getElementById('message').textContent = 'Hand Phone Back';
-      setTimeout(function() { yes(1); },3000);
-    } else {
-      document.getElementById('message').textContent = 'Transaction Done';
-      setTimeout(() => {
-        document.getElementById('message').style.display = 'none';
-        document.getElementById('amountInput').style.display = 'flex';
-      },1000);
+    try {
+      await ndef.write(JSON.stringify(transCard));
+      transCard = null;
+      inProgress = false;
+      alert('Call back');
+      if (sign == -1) {
+        alert('hand back');
+        document.getElementById('message').textContent = 'Hand Phone Back';
+        setTimeout(function() { yes(1); },3000);
+      } else {
+        document.getElementById('message').textContent = 'Transaction Done';
+        setTimeout(() => {
+          document.getElementById('message').style.display = 'none';
+          document.getElementById('amountInput').style.display = 'flex';
+        },1000);
+      }
+    } catch (error) {
+      alert(error);
     }
   } else {
     alert('WTF');
