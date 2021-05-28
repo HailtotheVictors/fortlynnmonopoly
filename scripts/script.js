@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.6.4');
+  alert('V1.6.5');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -490,12 +490,20 @@ async function addProp() {
           let p = getPropFromAbbr(card.abbr);
           alert(JSON.stringify(p));
           if (!p) {
+            alert('returning 493');
             return;
           }
           console.log(rentProps.length);
           if (rentProps.length > 0) {
             console.log(p.color,rentProps[0].color);
             if (p.color != rentProps[0].color) {
+              console.log('returning 500');
+              return;
+            }
+          }
+          for (let r of rentProps) {
+            if (card.abbr == r.abbr) {
+              alert('returning 506');
               return;
             }
           }
