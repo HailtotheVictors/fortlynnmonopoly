@@ -7,7 +7,6 @@ window.onresize = () => {
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
-var players = [];
 var gameSet = false;
 var initBalance = 1e6;
 var bankCard;
