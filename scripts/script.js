@@ -1,5 +1,5 @@
 window.onload = () => {
-  alert('V1.6.11');
+  alert('V1.6.12');
   document.getElementsByTagName('main')[0].style.height = `${window.innerHeight - 60}px`;
 }
 
@@ -528,8 +528,6 @@ async function addProp() {
               val = 0;
             }
           }
-          alert(val + typeof val);
-          alert(rentPrice + typeof rentPrice);
           rentPrice += val;
         } catch (error) {
           alert(error);
@@ -548,6 +546,7 @@ function advRent() {
 }
 
 function rentYes() {
+  alert(rentPrice);
   document.getElementById('amountInput').style.display = 'none';
   document.getElementById('message').textContent = 'Scan Card';
   document.getElementById('message').style.display = 'block';
