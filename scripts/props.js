@@ -57,5 +57,5 @@ america[3] = {name:'Pennsylvania Avenua',abbr:'PENN',price:260,rent:[109,218,436
 america[4] = {name:'Bourbon Street',abbr:'BOUR',price:260,rent:[109,218,436,872,1744,2180],house:150,hotel:300,color:'red',group:'Stripes'};
 america[5] = {name:'One World Trade Center',abbr:'1WTC',price:270,rent:[117,234,468,936,1872,2340],house:162,hotel:324,color:'red',group:'Stripes'};
 america[6] = {name:'Empire State Building',abbr:'ESB',price:250,rent:[101,202,404,808,1616,2020],house:150,hotel:300,color:'red',group:'Stripes'};
-america[7] = {name:'US Capitol',abbr:'CAPI',price:280,rent:[125,250,500,1000,2000,2500],house:168,hotel:336,color:'red',group:'Stripes'};
+america[7] = {name:'US Capitol',abbr:'CAP',price:280,rent:[125,250,500,1000,2000,2500],house:168,hotel:336,color:'red',group:'Stripes'};
 var allProps = mainProperties.concat(space).concat(planesAndTrains).concat(america);
